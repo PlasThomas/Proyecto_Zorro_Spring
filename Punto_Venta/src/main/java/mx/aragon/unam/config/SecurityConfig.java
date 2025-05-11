@@ -1,4 +1,4 @@
 package mx.aragon.unam.config;
 
-public class demo {
+public class SecurityConfig {
 }

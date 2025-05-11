@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{plantillas/plantilla_inicio}">
+<head>
+    <title>Inicio | Zorro Abarrotero</title>
+</head>
+<body>
+<!-- Sobrescribe solo la sección de botones -->
+<div layout:fragment="right-panel">
+    <div class="text-center p-5">
+        <h2 class="mb-4 text-white">Accede a tu cuenta</h2>
+        <div class="d-grid gap-3">
+            <a th:href="@{/login}" class="btn btn-light btn-lg py-3 text-danger fw-bold">
+                Iniciar Sesión
+            </a>
+            <a th:href="@{/signup}" class="btn btn-outline-light btn-lg py-3 fw-bold">
+                Registrarse
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
