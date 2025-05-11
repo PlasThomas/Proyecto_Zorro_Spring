@@ -1,6 +1,6 @@
 package mx.aragon.unam.service.provedor;
 
-import mx.aragon.unam.entity.provedor.PedidoProveedorEntity;
+import mx.aragon.unam.model.entity.provedor.PedidoProveedorEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

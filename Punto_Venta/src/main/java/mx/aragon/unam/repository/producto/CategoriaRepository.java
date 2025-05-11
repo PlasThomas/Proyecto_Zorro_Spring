@@ -1,9 +1,9 @@
 package mx.aragon.unam.repository.producto;
 
-import mx.aragon.unam.entity.producto.DetallePedidoEntity;
+import mx.aragon.unam.model.entity.producto.CategoriaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DetallePedidoRepository extends JpaRepository<DetallePedidoEntity, Integer> {
+public interface CategoriaRepository extends JpaRepository<CategoriaEntity, Short> {
 }

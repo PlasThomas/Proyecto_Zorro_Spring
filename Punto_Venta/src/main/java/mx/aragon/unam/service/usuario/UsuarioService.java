@@ -1,6 +1,6 @@
 package mx.aragon.unam.service.usuario;
 
-import mx.aragon.unam.entity.usuario.UsuarioEntity;
+import mx.aragon.unam.model.entity.usuario.UsuarioEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

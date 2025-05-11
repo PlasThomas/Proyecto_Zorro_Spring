@@ -1,6 +1,6 @@
-package mx.aragon.unam.service.producto;
+package mx.aragon.unam.service.producto.productos;
 
-import mx.aragon.unam.entity.producto.ProductoEntity;
+import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.repository.producto.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +28,12 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         productoRepository.deleteById(id);
     }
 
     @Override
-    public ProductoEntity findById(Integer id) {
+    public ProductoEntity findById(Long id) {
         return productoRepository.findById(id).orElse(null);
     }
 }

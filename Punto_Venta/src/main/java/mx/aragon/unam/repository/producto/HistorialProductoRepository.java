@@ -1,6 +1,6 @@
 package mx.aragon.unam.repository.producto;
 
-import mx.aragon.unam.entity.producto.HistorialProductoEntity;
+import mx.aragon.unam.model.entity.producto.HistorialProductoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

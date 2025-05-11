@@ -1,11 +1,11 @@
-package mx.aragon.unam.entity.venta;
+package mx.aragon.unam.model.entity.venta;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mx.aragon.unam.entity.producto.ProductoEntity;
+import mx.aragon.unam.model.entity.producto.ProductoEntity;
 
 import java.math.BigDecimal;
 
@@ -18,7 +18,7 @@ public class DetalleVentaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_detalle")
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "id_venta", nullable = false)
@@ -33,9 +33,6 @@ public class DetalleVentaEntity {
 
     @Column(name = "precio_unitario", nullable = false)
     private BigDecimal precioUnitario;
-
-    @Column(name = "subtotal", nullable = false)
-    private BigDecimal subtotal;
 
     @Column(name = "total_linea", nullable = false)
     private BigDecimal totalLinea;

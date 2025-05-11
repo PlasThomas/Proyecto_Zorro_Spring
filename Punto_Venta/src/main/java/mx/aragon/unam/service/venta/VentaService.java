@@ -1,6 +1,6 @@
 package mx.aragon.unam.service.venta;
 
-import mx.aragon.unam.entity.venta.VentaEntity;
+import mx.aragon.unam.model.entity.venta.VentaEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

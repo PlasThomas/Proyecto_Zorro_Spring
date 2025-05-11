@@ -1,18 +1,16 @@
-package mx.aragon.unam.entity.provedor;
+package mx.aragon.unam.model.entity.provedor;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mx.aragon.unam.entity.producto.DetallePedidoEntity;
-import mx.aragon.unam.entity.usuario.UsuarioEntity;
+import mx.aragon.unam.model.entity.usuario.UsuarioEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Entity(name = "pedidos_proveedores")
+@Entity(name = "pedidos_proveedor")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,23 +35,11 @@ public class PedidoProveedorEntity {
     @Column(name = "estado", nullable = false)
     private EstadoPedido estado;
 
-    @Column(name = "subtotal", nullable = false)
-    private BigDecimal subtotal;
-
     @Column(name = "total", nullable = false)
     private BigDecimal total;
 
-    @Column(name = "notas")
-    private String notas;
-
     @ManyToOne
-    @JoinColumn(name = "usuario_registro", nullable = false)
+    @JoinColumn(name = "id_usuario_registro", nullable = false)
     private UsuarioEntity usuarioRegistro;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<DetallePedidoEntity> detalles;
-
-    public enum EstadoPedido {
-        PENDIENTE, COMPLETADO, CANCELADO
-    }
 }

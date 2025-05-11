@@ -1,6 +1,6 @@
-package mx.aragon.unam.service.producto;
+package mx.aragon.unam.service.producto.productos;
 
-import mx.aragon.unam.entity.producto.ProductoEntity;
+import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +9,6 @@ import java.util.List;
 public interface ProductoService {
     ProductoEntity save(ProductoEntity producto);
     List<ProductoEntity> findAll();
-    void deleteById(Integer id);
-    ProductoEntity findById(Integer id);
+    void deleteById(Long id);
+    ProductoEntity findById(Long id);
 }

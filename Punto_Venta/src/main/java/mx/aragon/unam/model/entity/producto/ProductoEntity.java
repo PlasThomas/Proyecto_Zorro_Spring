@@ -1,14 +1,13 @@
-package mx.aragon.unam.entity.producto;
+package mx.aragon.unam.model.entity.producto;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mx.aragon.unam.entity.provedor.ProveedorEntity;
+import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity(name = "productos")
 @Data
@@ -26,14 +25,11 @@ public class ProductoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
-    private CategoriaProductoEntity categoria;
+    private CategoriaEntity categoria;
 
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
     private ProveedorEntity proveedor;
-
-    @Column(name = "descripcion")
-    private String descripcion;
 
     @Column(name = "precio_compra", nullable = false)
     private BigDecimal precioCompra;
@@ -51,13 +47,4 @@ public class ProductoEntity {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fechaCreacion;
-
-    @Column(name = "fecha_actualizacion")
-    private LocalDateTime fechaActualizacion;
-
-    public enum UnidadMedida {
-        PIEZA, KILO, LITRO, PAQUETE, CAJA
-    }
 }
