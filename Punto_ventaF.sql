@@ -115,16 +115,24 @@ CREATE TABLE historial_productos (
 ) ENGINE=InnoDB;
 
 -- 9 Tabla de historial de pedidos 
+-- 9 Tabla de historial de pedidos 
 CREATE TABLE historial_pedidos (
-    id_historial BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_movimiento BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_pedido INT NOT NULL,
     fecha_movimiento DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    estado_anterior VARCHAR(20),
-    estado_nuevo VARCHAR(20) NOT NULL,
-    usuario_email VARCHAR(100) NOT NULL,
+    tipo_movimiento ENUM('CREACION', 'ACTUALIZACION','CANCELACION') NOT NULL,
+    estado_anterior ENUM('PENDIENTE', 'RECIBIDO', 'CANCELADO') NULL,
+    estado_nuevo ENUM('PENDIENTE', 'RECIBIDO', 'CANCELADO') NULL,
+    campo_modificado VARCHAR(50) NULL,
+    valor_anterior TEXT NULL,
+    valor_nuevo TEXT NULL,
+    id_referencia INT NULL,
+    tipo_referencia ENUM('PROVEEDOR', 'USUARIO', 'SISTEMA') NULL,
+    id_usuario INT NOT NULL,
     notas TEXT,
-    FOREIGN KEY (id_pedido) REFERENCES pedidos_proveedor(id_pedido),
-    FOREIGN KEY (usuario_email) REFERENCES usuarios(email),
-    INDEX (id_pedido)
+    FOREIGN KEY (id_pedido) REFERENCES pedidos_proveedor(id_pedido) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    INDEX (id_pedido, fecha_movimiento),
+    INDEX (tipo_movimiento)
 ) ENGINE=InnoDB;
 
