@@ -112,9 +112,7 @@ CREATE TABLE historial_productos (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     INDEX (id_producto, fecha_movimiento),
     INDEX (tipo_movimiento)
-) ENGINE=InnoDB;
-
--- 9 Tabla de historial de pedidos 
+) ENGINE=InnoDB; 
 -- 9 Tabla de historial de pedidos 
 CREATE TABLE historial_pedidos (
     id_movimiento BIGINT AUTO_INCREMENT PRIMARY KEY,
