@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<header th:fragment="main-header" class="main-header text-white shadow-sm">
+    <div class="container-fluid d-flex justify-content-between align-items-center py-2">
+        <!-- Logo -->
+        <a class="d-flex align-items-center text-white text-decoration-none" th:href="@{/}" style="padding-left: 47.5%;">
+            <img th:src="@{/images/logo.png}" alt="Logo" height="60" class="img-border me-2">
+        </a>
 
-</body>
-</html>
+        <!-- Usuario -->
+        <div class="dropdown">
+            <button class="btn btn-outline-light dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle me-1"></i>
+                <span>Usuario</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Cuenta</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>

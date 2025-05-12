@@ -1,0 +1,49 @@
+<aside th:fragment="main-sidebar" class="bg-light border-end" style="width: 250px;">
+    <div class="p-3">
+        <!-- Menú de navegación -->
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/}">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/productos}">
+                    <i class="bi bi-box-seam me-2"></i> Productos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/inventario}">
+                    <i class="bi bi-clipboard-data me-2"></i> Inventario
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/ventas}">
+                    <i class="bi bi-cash-coin me-2"></i> Ventas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/clientes}">
+                    <i class="bi bi-people me-2"></i> Clientes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/proveedores}">
+                    <i class="bi bi-truck me-2"></i> Proveedores
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="my-3">
+
+        <!-- Menú secundario -->
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/configuracion}">
+                    <i class="bi bi-gear me-2"></i> Configuración
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
