@@ -1,10 +1,11 @@
-package mx.aragon.unam.model.entity.provedor;
+package mx.aragon.unam.model.entity.pedido;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
 import mx.aragon.unam.model.entity.usuario.UsuarioEntity;
 
 import java.math.BigDecimal;

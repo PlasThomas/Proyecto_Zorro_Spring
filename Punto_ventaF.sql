@@ -134,3 +134,16 @@ CREATE TABLE historial_pedidos (
     INDEX (tipo_movimiento)
 ) ENGINE=InnoDB;
 
+-- 10. Tabla de detalle de pedido a proveedores
+CREATE TABLE detalle_pedido (
+    id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad_solicitada DECIMAL(10,3) UNSIGNED NOT NULL,
+    cantidad_recibida DECIMAL(10,3) UNSIGNED DEFAULT 0,
+    precio_unitario DECIMAL(12,2) UNSIGNED NOT NULL,
+    total_linea DECIMAL(12,2) UNSIGNED NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES pedidos_proveedor(id_pedido) ON DELETE CASCADE,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    INDEX (id_pedido)
+) ENGINE=InnoDB;

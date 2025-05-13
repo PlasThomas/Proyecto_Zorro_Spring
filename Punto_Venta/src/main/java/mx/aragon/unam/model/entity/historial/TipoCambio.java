@@ -1,4 +1,4 @@
-package mx.aragon.unam.model.entity.producto;
+package mx.aragon.unam.model.entity.historial;
 
 public enum TipoCambio {
     ENTRADA, SALIDA, AJUSTE

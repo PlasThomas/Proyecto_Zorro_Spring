@@ -1,10 +1,11 @@
-package mx.aragon.unam.model.entity.producto;
+package mx.aragon.unam.model.entity.historial;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.model.entity.usuario.UsuarioEntity;
 
 import java.math.BigDecimal;
@@ -43,7 +44,7 @@ public class HistorialProductoEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_referencia")
-    private TipoReferencia tipoReferencia;
+    private TipoReferenciaProducto tipoReferencia;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)

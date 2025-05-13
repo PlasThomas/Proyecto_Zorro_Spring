@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AuthController{
     @GetMapping("/login")
     public String login() {
-        return "vistas/login";  // Plantilla login.html
+        return "vistas/login";
     }
 
     @GetMapping("/signup")
     public String signup() {
-        return "vistas/signup"; // Plantilla signup.html
+        return "vistas/signup";
     }
 }

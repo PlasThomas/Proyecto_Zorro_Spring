@@ -1,6 +1,6 @@
 package mx.aragon.unam.service.provedor;
 
-import mx.aragon.unam.model.entity.provedor.PedidoProveedorEntity;
+import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
 import mx.aragon.unam.repository.provedor.PedidoProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
