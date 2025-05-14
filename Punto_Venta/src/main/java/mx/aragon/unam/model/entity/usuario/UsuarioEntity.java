@@ -24,6 +24,7 @@ public class UsuarioEntity {
     @Column(name = "contrasena_hash", nullable = false, length = 255)
     private String contrasenaHash;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "ENUM('ADMINISTRADOR', 'VENDEDOR', 'CLIENTE')")
     private TipoUsuario tipo = TipoUsuario.CLIENTE;
@@ -40,9 +41,11 @@ public class UsuarioEntity {
     @Column(length = 20)
     private String rfc;
 
+    @Builder.Default
     @Column(name = "fecha_registro", nullable = false)
-    private LocalDateTime fechaRegistro;
+    private LocalDateTime fechaRegistro = LocalDateTime.now();
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean activo = true;
 
