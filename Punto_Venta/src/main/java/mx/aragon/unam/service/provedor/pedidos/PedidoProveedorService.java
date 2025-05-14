@@ -1,4 +1,4 @@
-package mx.aragon.unam.service.provedor;
+package mx.aragon.unam.service.provedor.pedidos;
 
 import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
 import org.springframework.stereotype.Service;
