@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class AuthController{
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String login() {
-        return "vistas/login";
-    }
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String inicio(){
         return "vistas/index";
+    }
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login() {
+        return "vistas/login";
     }
 }
