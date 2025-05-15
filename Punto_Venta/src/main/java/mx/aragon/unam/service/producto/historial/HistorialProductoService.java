@@ -9,6 +9,6 @@ import java.util.List;
 public interface HistorialProductoService {
     HistorialProductoEntity save(HistorialProductoEntity historial);
     List<HistorialProductoEntity> findAll();
-    void deleteById(Long id);
-    HistorialProductoEntity findById(Long id);
+    void deleteById(Integer id);
+    HistorialProductoEntity findById(Integer id);
 }

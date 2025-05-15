@@ -28,12 +28,12 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         productoRepository.deleteById(id);
     }
 
     @Override
-    public ProductoEntity findById(Long id) {
+    public ProductoEntity findById(Integer id) {
         return productoRepository.findById(id).orElse(null);
     }
 }

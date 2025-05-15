@@ -28,12 +28,12 @@ public class HistorialProductoServiceImpl implements HistorialProductoService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         historialProductoRepository.deleteById(id);
     }
 
     @Override
-    public HistorialProductoEntity findById(Long id) {
+    public HistorialProductoEntity findById(Integer id) {
         return historialProductoRepository.findById(id).orElse(null);
     }
 }

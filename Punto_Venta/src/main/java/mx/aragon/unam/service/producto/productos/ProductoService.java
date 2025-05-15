@@ -9,6 +9,6 @@ import java.util.List;
 public interface ProductoService {
     ProductoEntity save(ProductoEntity producto);
     List<ProductoEntity> findAll();
-    void deleteById(Long id);
-    ProductoEntity findById(Long id);
+    void deleteById(Integer id);
+    ProductoEntity findById(Integer id);
 }

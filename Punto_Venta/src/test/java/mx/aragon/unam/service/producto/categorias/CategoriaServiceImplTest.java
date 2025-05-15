@@ -18,11 +18,13 @@ class CategoriaServiceImplTest {
 
     @Test
     void save() {
-        CategoriaEntity categoria = CategoriaEntity.builder()
+        CategoriaEntity categorias = CategoriaEntity.builder()
                 .nombre("Nombre  pruebas ")
                 .activo(true)
                 .detalles("Datos de prueba")
                 .build();
+        categoriaRepository.save(categorias);
+        System.out.println(categorias);
     }
 
     @Test
@@ -33,7 +35,7 @@ class CategoriaServiceImplTest {
 
     @Test
     void deleteById() {
-        categoriaService.deleteById(10);
+        categoriaService.deleteById(11);
     }
 
     @Test
