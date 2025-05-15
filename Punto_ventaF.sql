@@ -33,7 +33,7 @@ CREATE TABLE proveedores (
 
 -- 3. Tabla de categorías
 CREATE TABLE categorias (
-    id_categoria SMALLINT AUTO_INCREMENT PRIMARY KEY,
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE,
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     detalles VARCHAR(300)
@@ -43,7 +43,7 @@ CREATE TABLE categorias (
 CREATE TABLE productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    id_categoria SMALLINT,
+    id_categoria INT,
     id_proveedor INT,
     precio_compra DECIMAL(12,2) UNSIGNED NOT NULL,
     precio_venta DECIMAL(12,2) UNSIGNED NOT NULL,
