@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class inicioAdminController {
     @GetMapping("/admin/inicio")
-    public String login() {
+    public String vistaInicioAdmin() {
         return "vistas/admin/inicio";  // Plantilla login.html
     }
 }

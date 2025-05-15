@@ -1,11 +1,23 @@
 package mx.aragon.unam.config;
 
+import mx.aragon.unam.model.entity.usuario.TipoUsuario;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -14,6 +26,75 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**"
+                        ).permitAll()
+                        .requestMatchers("/admin/**").hasAuthority(TipoUsuario.ADMINISTRADOR.name())
+                        .requestMatchers("/cajere/**").hasAuthority(TipoUsuario.VENDEDOR.name())
+                        .requestMatchers("/finanzas/**").hasAuthority(TipoUsuario.FINANZAS.name())
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler(authenticationSuccessHandler()) // Usamos un custom success handler
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/acceso-denegado")
+                );
+
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+            if (authorities.stream().anyMatch(a -> a.getAuthority().equals(TipoUsuario.ADMINISTRADOR.name()))) {
+                response.sendRedirect("/admin/inicio");
+            }
+            else if (authorities.stream().anyMatch(a -> a.getAuthority().equals(TipoUsuario.VENDEDOR.name()))) {
+                response.sendRedirect("/cajere/inicio");
+            }
+            else if (authorities.stream().anyMatch(a -> a.getAuthority().equals(TipoUsuario.FINANZAS.name()))) {
+                response.sendRedirect("/finanzas/inicio");
+            }
+        };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    InMemoryUserDetailsManager usuarioTest(PasswordEncoder encoder){
+    return new InMemoryUserDetailsManager(
+            User.withUsername("mike")
+                    .password(encoder.encode("123"))
+                    .authorities(TipoUsuario.ADMINISTRADOR.name())
+                    .build()
+        );
+    }
+
+    public static List<SimpleGrantedAuthority> mapTiposUsuarioToAuthorities(List<TipoUsuario> tipos) {
+        return tipos.stream()
+                .map(tipo -> new SimpleGrantedAuthority(tipo.name()))
+                .collect(Collectors.toList());
     }
 }
