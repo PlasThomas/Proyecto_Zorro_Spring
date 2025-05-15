@@ -19,7 +19,7 @@ CREATE TABLE usuarios (
     INDEX (nombre_completo)
 ) ENGINE=InnoDB;
 
--- 2. Tabla de proveedores
+-- 2. Tabla de provedores
 CREATE TABLE proveedores (
     id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
     nombre_empresa VARCHAR(100) NOT NULL,

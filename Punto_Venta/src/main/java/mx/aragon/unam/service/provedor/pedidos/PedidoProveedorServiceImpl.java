@@ -1,4 +1,4 @@
-package mx.aragon.unam.service.provedor;
+package mx.aragon.unam.service.provedor.pedidos;
 
 import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
 import mx.aragon.unam.repository.provedor.PedidoProveedorRepository;
@@ -29,11 +29,13 @@ public class PedidoProveedorServiceImpl implements PedidoProveedorService {
 
     @Override
     public void deleteById(Integer id) {
+
         pedidoProveedorRepository.deleteById(id);
     }
 
     @Override
     public PedidoProveedorEntity findById(Integer id) {
+
         return pedidoProveedorRepository.findById(id).orElse(null);
     }
 }
