@@ -12,6 +12,6 @@ public class AuthController{
     }
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login() {
-        return "vistas/vendedor/inicio";
+        return "vistas/login";
     }
 }

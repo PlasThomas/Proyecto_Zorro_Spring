@@ -1,6 +1,7 @@
 package mx.aragon.unam.config;
 
 import mx.aragon.unam.model.entity.usuario.TipoUsuario;
+import mx.aragon.unam.service.usuario.UsuarioDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,39 +25,44 @@ import java.util.stream.Collectors;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
+    private final UsuarioDetailsServiceImpl usuarioDetailsService;
+
+    public SecurityConfig(UsuarioDetailsServiceImpl usuarioDetailsService) {
+        this.usuarioDetailsService = usuarioDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/",
-                                "/login",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**"
-                        ).permitAll()
-                        .requestMatchers("/admin/**").hasAuthority(TipoUsuario.ADMINISTRADOR.name())
-                        .requestMatchers("/cajere/**").hasAuthority(TipoUsuario.VENDEDOR.name())
-                        .requestMatchers("/finanzas/**").hasAuthority(TipoUsuario.FINANZAS.name())
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .successHandler(authenticationSuccessHandler()) // Usamos un custom success handler
-                        .failureUrl("/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout=true")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
-                )
-                .exceptionHandling(ex -> ex
-                        .accessDeniedPage("/acceso-denegado")
-                );
-
+        http.userDetailsService(usuarioDetailsService)
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(
+                            "/",
+                            "/login",
+                            "/css/**",
+                            "/js/**",
+                            "/images/**"
+                    ).permitAll()
+                    .requestMatchers("/admin/**").hasAuthority(TipoUsuario.ADMINISTRADOR.name())
+                    .requestMatchers("/cajere/**").hasAuthority(TipoUsuario.VENDEDOR.name())
+                    .requestMatchers("/finanzas/**").hasAuthority(TipoUsuario.FINANZAS.name())
+                    .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                    .loginPage("/login")
+                    .successHandler(authenticationSuccessHandler()) // Usamos un custom success handler
+                    .failureUrl("/login?error=true")
+                    .permitAll()
+            )
+            .logout(logout -> logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout=true")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll()
+            )
+            .exceptionHandling(ex -> ex
+                    .accessDeniedPage("/acceso-denegado")
+            );
         return http.build();
     }
 
@@ -79,17 +85,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    InMemoryUserDetailsManager usuarioTest(PasswordEncoder encoder){
-    return new InMemoryUserDetailsManager(
-            User.withUsername("mike")
-                    .password(encoder.encode("123"))
-                    .authorities(TipoUsuario.ADMINISTRADOR.name())
-                    .build()
-        );
+        return new SHA256PasswordEncoder();
     }
 
     public static List<SimpleGrantedAuthority> mapTiposUsuarioToAuthorities(List<TipoUsuario> tipos) {
