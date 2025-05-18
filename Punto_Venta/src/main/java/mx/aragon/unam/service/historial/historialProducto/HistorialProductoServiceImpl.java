@@ -1,7 +1,7 @@
-package mx.aragon.unam.service.producto.historial;
+package mx.aragon.unam.service.historial.historialProducto;
 
 import mx.aragon.unam.model.entity.historial.HistorialProductoEntity;
-import mx.aragon.unam.repository.producto.HistorialProductoRepository;
+import mx.aragon.unam.repository.historial.HistorialProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

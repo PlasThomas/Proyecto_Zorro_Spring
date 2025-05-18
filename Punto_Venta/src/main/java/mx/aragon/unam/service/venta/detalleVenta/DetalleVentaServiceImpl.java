@@ -1,4 +1,4 @@
-package mx.aragon.unam.service.venta;
+package mx.aragon.unam.service.venta.detalleVenta;
 
 import mx.aragon.unam.model.entity.venta.DetalleVentaEntity;
 import mx.aragon.unam.repository.venta.DetalleVentaRepository;

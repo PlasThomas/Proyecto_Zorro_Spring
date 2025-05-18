@@ -7,17 +7,15 @@ import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
 import mx.aragon.unam.repository.producto.ProductoRepository;
 import mx.aragon.unam.repository.provedor.ProveedorRepository;
 import mx.aragon.unam.service.producto.categorias.CategoriaService;
-import mx.aragon.unam.service.provedor.provedor.ProveedorService;
+import mx.aragon.unam.service.provedor.ProveedorService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.lang.reflect.AccessibleObject;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class ProductoServiceImplTest {
     @Autowired

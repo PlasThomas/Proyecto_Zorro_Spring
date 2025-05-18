@@ -1,4 +1,4 @@
-package mx.aragon.unam.repository.provedor;
+package mx.aragon.unam.repository.pedido;
 
 import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
