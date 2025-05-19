@@ -4,6 +4,9 @@ import mx.aragon.unam.model.entity.usuario.TipoUsuario;
 import mx.aragon.unam.service.usuario.UsuarioDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,7 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import java.util.Collection;
 import java.util.List;
@@ -50,6 +55,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                     .loginPage("/login")
                     .successHandler(authenticationSuccessHandler()) // Usamos un custom success handler
+                    .failureHandler(authenticationFailureHandler()) // Agrega este handler
                     .failureUrl("/login?error=true")
                     .permitAll()
             )
@@ -79,7 +85,32 @@ public class SecurityConfig {
             }
             else if (authorities.stream().anyMatch(a -> a.getAuthority().equals(TipoUsuario.FINANZAS.name()))) {
                 response.sendRedirect("/finanzas/inicio");
+            }else if (authorities.stream().anyMatch(a -> a.getAuthority().equals(TipoUsuario.CLIENTE.name()))) {
+                // Cerrar sesión inmediatamente si es cliente
+                new SecurityContextLogoutHandler().logout(request, response, authentication);
+                response.sendRedirect("/login?error=access_denied");
+                return;
             }
+        };
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            String errorMessage;
+
+            if (exception instanceof BadCredentialsException) {
+                errorMessage = "Usuario o contraseña incorrectos";
+            } else if (exception instanceof DisabledException) {
+                errorMessage = "Cuenta deshabilitada";
+            } else if (exception instanceof LockedException) {
+                errorMessage = "Cuenta bloqueada";
+            } else {
+                errorMessage = "Error al iniciar sesión";
+            }
+
+            request.getSession().setAttribute("error", errorMessage);
+            response.sendRedirect("/login?error=true");
         };
     }
 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Tú head existente -->
+</head>
+<body>
+<div class="d-flex flex-column vh-100">
+    <!-- Header y sidebar existentes -->
+
+    <!-- Contenido principal -->
+    <main class="flex-grow-1 p-4" layout:fragment="content">
+        <!-- Tabla dinámica -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-custom-red text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-table me-2"></i> Lista de Productos</h5>
+                <a th:href="@{/productos/nuevo}" class="btn btn-light btn-sm">
+                    <i class="bi bi-plus-circle"></i> Nuevo Producto
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producto, stat : ${productos}">
+                            <th scope="row" th:text="${stat.count}">1</th>
+                            <td th:text="${producto.nombre}">Producto Ejemplo</td>
+                            <td th:text="${producto.categoria.nombre}">Electrónicos</td>
+                            <td th:text="${'$' + #numbers.formatDecimal(producto.precio, 1, 2)}">999.99</td>
+                            <td>
+                                        <span th:class="${producto.stock < 10} ? 'badge bg-danger' : 'badge bg-success'"
+                                              th:text="${producto.stock}">50</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/productos/editar/{id}(id=${producto.id})}"
+                                   class="btn btn-sm btn-outline-custom-red me-1">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger"
+                                        th:attr="data-id=${producto.id}"
+                                        onclick="confirmDelete(this)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Paginación -->
+                    <nav th:if="${totalPaginas > 1}">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item" th:classappend="${paginaActual == 0} ? 'disabled'">
+                                <a class="page-link" th:href="@{/productos(page=${paginaActual - 1})}">Anterior</a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPaginas - 1)}">
+                                <a th:text="${i + 1}"
+                                   th:href="@{/productos(page=${i})}"
+                                   class="page-link"
+                                   th:classappend="${i == paginaActual} ? 'active'"></a>
+                            </li>
+                            <li class="page-item" th:classappend="${paginaActual == totalPaginas - 1} ? 'disabled'">
+                                <a class="page-link" th:href="@{/productos(page=${paginaActual + 1})}">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer existente -->
+</div>
+
+<!-- Script para confirmar eliminación -->
+<script>
+    function confirmDelete(button) {
+        const id = button.getAttribute('data-id');
+        if (confirm('¿Estás seguro de eliminar este producto?')) {
+            window.location.href = `/productos/eliminar/${id}`;
+        }
+    }
+</script>
+</body>
+</html>

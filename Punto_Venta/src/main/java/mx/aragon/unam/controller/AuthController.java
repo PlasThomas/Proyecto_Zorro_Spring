@@ -10,8 +10,10 @@ public class AuthController{
     public String inicio(){
         return "vistas/index";
     }
+
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login() {
         return "vistas/login";
     }
+
 }
