@@ -33,7 +33,7 @@ class ProductoServiceImplTest {
     void save() {
         // Arrange
         ProveedorEntity proveedor = proveedorService.findById(5);
-        CategoriaEntity categoria = categoriaService.findById(4);
+        CategoriaEntity categoria = categoriaService.findById((short) 4);
 
         ProductoEntity producto = ProductoEntity.builder()
                 .nombre("Producto de prueba")

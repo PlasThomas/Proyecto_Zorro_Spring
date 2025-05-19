@@ -11,17 +11,26 @@
 </head>
   <body>
     <div class="d-flex flex-column vh-100">
-      <!-- Header simplificado -->
       <header th:replace="~{plantillas/fragments/header_comm :: main-header}"></header>
-      <!-- Contenedor principal -->
       <div class="d-flex flex-grow-1">
-        <!-- Sidebar -->
         <aside th:replace="~{plantillas/fragments/sidebar_comm :: main-sidebar}"></aside>
-
-        <!-- Contenido principal -->
-        <main class="flex-grow-1 p-4" layout:fragment="content">
-          <!-- El contenido específico irá aquí -->
-        </main>
+          <main class="flex-grow-1 p-4" layout:fragment="content">
+            <!-- Notificaciones Bootstrap -->
+            <div th:if="${mensajeExito}" class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+              <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <div th:text="${mensajeExito}"></div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            </div>
+            <div th:if="${mensajeError}" class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+              <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div th:text="${mensajeError}"></div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            </div>
+          </main>
       </div>
       <!-- Footer -->
       <footer th:replace="~{plantillas/fragments/footer_comm :: main-footer}"></footer>

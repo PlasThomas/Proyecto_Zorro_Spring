@@ -37,7 +37,7 @@ public class InicioController {
 
     @RequestMapping(value = "/admin/inicio",method = RequestMethod.GET)
     public String vistaInicioAdmin() {
-        return "vistas/adminfinan/inicio";
+        return "vistas/admin/inicio";
     }
 
     @RequestMapping(value = "/cajere/inicio",method = RequestMethod.GET)
@@ -47,6 +47,6 @@ public class InicioController {
 
     @RequestMapping(value = "/finanzas/inicio",method = RequestMethod.GET)
     public String vistaInicioFinanzas() {
-        return "vistas/adminfinan/inicio";
+        return "vistas/finanzas/inicio";
     }
 }

@@ -27,12 +27,12 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Short id) {
         categoriaRepository.deleteById(id);
     }
 
     @Override
-    public CategoriaEntity findById(Integer id) {
+    public CategoriaEntity findById(Short id) {
         return categoriaRepository.findById(id).orElse(null);
     }
 }

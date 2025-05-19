@@ -1,6 +1,7 @@
 package mx.aragon.unam.model.entity.producto;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,12 +19,14 @@ public class CategoriaEntity {
     @Column(name = "id_categoria")
     private Short id;
 
-    @Column(name = "nombre", nullable = false, length = 50)
+    @NotBlank
+    @Column(name = "nombre", nullable = false, length = 50, unique = true)
     private String nombre;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
+    @NotBlank
     @Column(name = "detalles")
     private String detalles;
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{plantillas/plantilla_inicio}">
+<head>
+    <title>Login | Zorro Abarrotero</title>
+    <!-- Puedes agregar CSS/JS adicional específico para login aquí -->
+</head>
+<body>
+<!-- Sobrescribe solo el panel derecho -->
+<div layout:fragment="right-panel">
+    <div class="container py-5">
+        <!-- Botón de regreso (posición absoluta) -->
+        <a th:href="@{/}" class="btn btn-outline-light  top-0 m-3">
+            <i class="bi bi-arrow-left"></i> Inicio
+        </a>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="text-center text-white p-4 rounded-3">
+                    <h2 class="mb-4"><i class="bi bi-person-vcard"></i> Registro de usuario </h2>
+                    <!-- Formulario -->
+                    <form th:action="@{/signup}" method="post" class="needs-validation" novalidate>
+                        <!-- Fila para Nombre y Apellido -->
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder=" " required>
+                                    <label for="nombre"><i class="bi bi-person"></i> Nombre</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="apellido" name="apellido" placeholder=" " required>
+                                    <label for="apellido"><i class="bi bi-person"></i> Apellido</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos individuales -->
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                            <label for="email"><i class="bi bi-envelope"></i> Correo Electrónico</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
+                            <label for="password"><i class="bi bi-key"></i> Contraseña</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="tel" class="form-control" id="telefono" name="telefono" placeholder=" " required>
+                            <label for="telefono"><i class="bi bi-telephone"></i> Teléfono</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="rfc" name="rfc" placeholder=" " required>
+                            <label for="rfc"><i class="bi bi-file-earmark-text"></i> RFC</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="text" class="form-control" id="direccion" name="direccion" placeholder=" " required>
+                            <label for="direccion"><i class="bi bi-geo-alt"></i> Dirección</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-light btn-lg w-100 text-danger fw-bold">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -9,15 +9,9 @@
                 </a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'VENDEDOR')">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS', 'VENDEDOR' )">
                 <a class="nav-link" th:href="@{/productos}">
                     <i class="bi bi-box-seam me-2"></i> Productos
-                </a>
-            </li>
-
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS')">
-                <a class="nav-link" th:href="@{/inventario}">
-                    <i class="bi bi-clipboard-data me-2"></i> Inventario
                 </a>
             </li>
 
@@ -34,6 +28,12 @@
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS')">
+                <a class="nav-link" th:href="@{/pedidos}">
+                    <i class="bi bi-people me-2"></i> Pedidos
+                </a>
+            </li>
+
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR')">
                 <a class="nav-link" th:href="@{/proveedores}">
                     <i class="bi bi-truck me-2"></i> Proveedores
                 </a>

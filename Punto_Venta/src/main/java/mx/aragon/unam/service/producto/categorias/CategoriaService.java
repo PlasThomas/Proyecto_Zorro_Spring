@@ -7,6 +7,6 @@ import java.util.List;
 public interface CategoriaService {
     CategoriaEntity save(CategoriaEntity categoria);
     List<CategoriaEntity> findAll();
-    void deleteById(Integer id);
-    CategoriaEntity findById(Integer id);
+    void deleteById(Short id);
+    CategoriaEntity findById(Short id);
 }

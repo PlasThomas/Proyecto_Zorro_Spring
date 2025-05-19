@@ -35,12 +35,12 @@ class CategoriaServiceImplTest {
 
     @Test
     void deleteById() {
-        categoriaService.deleteById(11);
+        categoriaService.deleteById((short) 11);
     }
 
     @Test
     void findById() {
-        CategoriaEntity categoria = categoriaService.findById(8);
+        CategoriaEntity categoria = categoriaService.findById((short) 8);
         System.out.println(categoria);
     }
 }
