@@ -46,21 +46,16 @@ public class CategoriasController {
             model.addAttribute("mensajeError", "Error al guardar la categoria");
             return "vistas/admin/categorias/alta-categoria";
         }
-
-        // Comprobamos si el ID ya existe → es modificación, no inserción
         if (categoria.getId() != null) {
             CategoriaEntity existente = categoriaService.findById(categoria.getId());
             if (existente != null) {
-                // Solo actualizamos campos modificables
                 existente.setNombre(categoria.getNombre());
-                // Agrega aquí cualquier otro campo modificable
                 categoriaService.save(existente);
             } else {
                 model.addAttribute("mensajeError", "La categoría a modificar no existe");
                 return "vistas/admin/categorias/alta-categoria";
             }
         } else {
-            // Alta nueva
             categoriaService.save(categoria);
         }
 

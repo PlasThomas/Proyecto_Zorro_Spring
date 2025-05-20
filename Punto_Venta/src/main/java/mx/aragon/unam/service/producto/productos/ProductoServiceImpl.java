@@ -36,4 +36,11 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoEntity findById(Integer id) {
         return productoRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<ProductoEntity> buscarPorCategoriaYProveedor(Integer categoriaId, Integer proveedorId) {
+        return productoRepository.buscarPorCategoriaYProveedor(categoriaId, proveedorId);
+    }
+
+
 }

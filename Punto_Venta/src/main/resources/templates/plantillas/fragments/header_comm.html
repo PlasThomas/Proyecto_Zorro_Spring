@@ -10,11 +10,8 @@
             <button class="btn btn-outline-light dropdown-toggle" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle me-1"></i>
-                <span>Usuario</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Cuenta</a></li>
-                <li><hr class="dropdown-divider"></li>
                 <li>
                     <form th:action="@{/logout}" method="post">
                         <button type="submit" class="dropdown-item text-danger">

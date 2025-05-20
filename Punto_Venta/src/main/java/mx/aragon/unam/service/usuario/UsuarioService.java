@@ -9,6 +9,6 @@ import java.util.List;
 public interface UsuarioService {
     UsuarioEntity save(UsuarioEntity usuario);
     List<UsuarioEntity> findAll();
-    void deleteById(String email);
-    UsuarioEntity findById(String email);
+    void deleteById(Integer id);
+    UsuarioEntity findById(Integer id);
 }

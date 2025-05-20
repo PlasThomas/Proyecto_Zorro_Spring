@@ -5,37 +5,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title th:text="${Titulo}"></title>
+  <!-- Bootstrap CSS -->
   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-  <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- Tu CSS personalizado -->
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
-  <body>
-    <div class="d-flex flex-column vh-100">
-      <header th:replace="~{plantillas/fragments/header_comm :: main-header}"></header>
-      <div class="d-flex flex-grow-1">
-        <aside th:replace="~{plantillas/fragments/sidebar_comm :: main-sidebar}"></aside>
-          <main class="flex-grow-1 p-4" layout:fragment="content">
-            <!-- Notificaciones Bootstrap -->
-            <div th:if="${mensajeExito}" class="position-fixed top-0 end-0 p-3" style="z-index: 11">
-              <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <div th:text="${mensajeExito}"></div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            </div>
-            <div th:if="${mensajeError}" class="position-fixed top-0 end-0 p-3" style="z-index: 11">
-              <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <div th:text="${mensajeError}"></div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            </div>
-          </main>
+<body>
+<div class="d-flex flex-column vh-100">
+  <!-- Header -->
+  <header th:replace="~{plantillas/fragments/header_comm :: main-header}"></header>
+
+  <div class="d-flex flex-grow-1">
+    <!-- Sidebar -->
+    <aside th:replace="~{plantillas/fragments/sidebar_comm :: main-sidebar}"></aside>
+
+    <!-- Contenido principal -->
+    <main class="flex-grow-1 p-4" layout:fragment="content">
+      <!-- Alerts de notificación -->
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <!-- Alert de éxito -->
+        <div th:if="${mensajeExito}" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong class="me-auto">Éxito</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" th:text="${mensajeExito}"></div>
+        </div>
+
+        <!-- Alert de error -->
+        <div th:if="${mensajeError}" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header bg-danger text-white">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" th:text="${mensajeError}"></div>
+        </div>
       </div>
-      <!-- Footer -->
-      <footer th:replace="~{plantillas/fragments/footer_comm :: main-footer}"></footer>
-    </div>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-  </body>
+
+      <!-- Tu contenido aquí -->
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer th:replace="~{plantillas/fragments/footer_comm :: main-footer}"></footer>
+</div>
+
+<!-- JavaScript -->
+<!-- jQuery (opcional, solo si lo necesitas) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap Bundle con Popper -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Script para manejar el cierre de alerts -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Cierra automáticamente los alerts después de 5 segundos
+    const alerts = document.querySelectorAll('.toast');
+    alerts.forEach(alert => {
+      const bsAlert = new bootstrap.Toast(alert, {
+        autohide: true,
+        delay: 5000
+      });
+      bsAlert.show();
+    });
+
+    // Manejar el cierre manual
+    document.querySelectorAll('[data-bs-dismiss="toast"]').forEach(button => {
+      button.addEventListener('click', function() {
+        const toast = this.closest('.toast');
+        const bsToast = bootstrap.Toast.getInstance(toast);
+        bsToast.hide();
+      });
+    });
+  });
+</script>
+</body>
 </html>

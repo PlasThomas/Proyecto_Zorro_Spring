@@ -9,21 +9,33 @@
                 </a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS', 'VENDEDOR' )">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS' )">
                 <a class="nav-link" th:href="@{/productos}">
                     <i class="bi bi-box-seam me-2"></i> Productos
                 </a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS', 'VENDEDOR' )">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR')">
+                <a class="nav-link" th:href="@{/admin/categorias}">
+                    <i class="bi bi-box-seam me-2"></i> Categorias
+                </a>
+            </li>
+
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'FINANZAS' )">
                 <a class="nav-link" th:href="@{/ventas}">
                     <i class="bi bi-cash-coin me-2"></i> Ventas
                 </a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR', 'VENDEDOR')">
-                <a class="nav-link" th:href="@{/clientes}">
-                    <i class="bi bi-people me-2"></i> Clientes
+            <li class="nav-item" sec:authorize="hasAnyAuthority('VENDEDOR')">
+                <a class="nav-link" th:href="@{/cajere/alta-cliente}">
+                    <i class="bi bi-people me-2"></i> Nuevo Cliente
+                </a>
+            </li>
+
+            <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR')">
+                <a class="nav-link" th:href="@{/admin/usuarios}">
+                    <i class="bi bi-people me-2"></i> Ususarios
                 </a>
             </li>
 
@@ -34,7 +46,7 @@
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('ADMINISTRADOR')">
-                <a class="nav-link" th:href="@{/proveedores}">
+                <a class="nav-link" th:href="@{admin/proveedores}">
                     <i class="bi bi-truck me-2"></i> Proveedores
                 </a>
             </li>

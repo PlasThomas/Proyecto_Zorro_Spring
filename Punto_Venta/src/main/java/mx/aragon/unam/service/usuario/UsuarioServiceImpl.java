@@ -28,12 +28,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void deleteById(String email) {
-        usuarioRepository.deleteById(email);
+    public void deleteById(Integer id) {
+        usuarioRepository.deleteById(id);
     }
 
     @Override
-    public UsuarioEntity findById(String email) {
-        return usuarioRepository.findById(email).orElse(null);
+    public UsuarioEntity findById(Integer id) {
+        return usuarioRepository.findById(id).orElse(null);
     }
 }
