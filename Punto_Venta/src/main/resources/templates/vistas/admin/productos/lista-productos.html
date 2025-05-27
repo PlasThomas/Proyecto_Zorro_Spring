@@ -45,7 +45,7 @@
                         <td>
                             <div class="product-name-container">
                                 <img th:src="@{'/product-images/' + ${producto.id} + '.png'}"
-                                     th:onerror="this.src='/images/default-product.png'"
+                                     th:onerror="this.src =='/images/default-product.png'"
                                      class="product-image img-thumbnail"
                                      alt="Imagen del producto"/>
                                 <span th:text="${producto.nombre}">Producto Ejemplo</span>
