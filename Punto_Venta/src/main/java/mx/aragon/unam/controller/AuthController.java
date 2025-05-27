@@ -15,5 +15,4 @@ public class AuthController{
     public String login() {
         return "vistas/login";
     }
-
 }

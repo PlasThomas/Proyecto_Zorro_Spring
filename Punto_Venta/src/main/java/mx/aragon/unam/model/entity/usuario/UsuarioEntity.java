@@ -32,7 +32,7 @@ public class UsuarioEntity implements UserDetails {
 
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "ENUM('ADMINISTRADOR', 'VENDEDOR', 'CLIENTE')")
+    @Column(nullable = false, columnDefinition = "ENUM('ADMINISTRADOR', 'VENDEDOR', 'FINANZAS', 'CLIENTE')")
     private TipoUsuario tipo = TipoUsuario.CLIENTE;
 
     @Column(name = "nombre_completo", length = 100, nullable = false)

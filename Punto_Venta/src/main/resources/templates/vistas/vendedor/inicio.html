@@ -4,10 +4,21 @@
       layout:decorate="~{plantillas/plantilla_principal}">
 <head>
   <title>Venta - Vendedor</title>
-  <link th:href="@{/css/venta-vendedor.css}" rel="stylesheet">
 </head>
 <body>
 <main layout:fragment="content">
+  <div th:if="${mensajeExito}" class="alert alert-success mb-3">
+    <i class="bi bi-check-circle-fill"></i>
+    <span th:text="${mensajeExito} ?: 'Exito'">
+              Exito
+            </span>
+  </div>
+  <div th:if="${mensajeError}" class="alert alert-danger mb-3">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span th:text="${mensajeError}?: 'Error'">
+              Error
+            </span>
+  </div>
   <div class="container-fluid">
     <h1 class="text-danger mb-4"><i class="bi bi-cart-plus me-2"></i>Nueva Venta</h1>
 
@@ -25,14 +36,13 @@
                 <input type="text" class="form-control" id="clientSearch" name="clienteId"
                        placeholder="Número de cliente" required>
               </div>
-
               <div class="col-12">
                 <button type="submit" class="btn btn-danger">
                   <i class="bi bi-search me-1"></i> Buscar
                 </button>
               </div>
-
             </form>
+
             <div th:if="${cliente != null}" class="mt-3">
               <div class="card-body">
                 <h6>Cliente:</h6>
@@ -118,15 +128,12 @@
                                                   th:text="${producto.existencia} + ' ' + ${producto.unidadMedida}"></span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-outline-danger add-product"
-                            th:disabled="${producto.existencia <= 0}"
-                            th:attr="data-id=${producto.id},
-                                                             data-nombre=${producto.nombre},
-                                                             data-precio=${producto.precioVenta},
-                                                             data-existencia=${producto.existencia},
-                                                             data-unidad=${producto.unidadMedida}">
-                      <i class="bi bi-plus-lg"></i>
-                    </button>
+                    <form th:action="@{/cajere/venta/agregar-producto/{id}(id=${producto.id})}" th:object="${producto}" method="post">
+                      <input type="hidden" name="idproduftos" th:value="${producto?.id}">
+                        <button class="btn btn-sm btn-outline-danger add-product" type="submit">
+                          <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </form>
                   </td>
                 </tr>
                 </tbody>
@@ -148,7 +155,6 @@
               <table class="table table-hover mb-0" id="productsTable">
                 <thead class="table-light">
                 <tr>
-                  <th width="5%">#</th>
                   <th width="40%">Producto</th>
                   <th width="15%">Precio</th>
                   <th width="20%">Cantidad</th>
@@ -157,24 +163,50 @@
                 </tr>
                 </thead>
                 <tbody id="selectedProducts">
-                <!-- Productos agregados aparecerán aquí -->
+                <tr th:each="product : ${compra?.productos}">
+                  <td>
+                    <strong th:text="${product.producto.nombre}">Nombre</strong><br>
+                    <small class="text-muted" th:text="${product.producto.categoria.nombre} + ' · ' + ${product.producto.proveedor.nombreEmpresa}">Detalle</small>
+                  </td>
+                  <td class="text-danger fw-bold" th:text="'$' + ${#numbers.formatDecimal(product.producto.precioVenta, 1, 2)}">$0.00</td>
+                  <td class="text-danger fw-bold" th:text="${product.cantidad}" >
+                  <td class="text-danger fw-bold" th:text="'$' + ${product.producto.precioVenta * product.cantidad}" >
+                  </td>
+                  <td>
+                    <form th:action="@{/cajere/venta/eliminar-producto/{id}(id=${product.producto.id})}" method="post">
+                      <input type="hidden" name="idcar" th:value="${product.producto.id}" />
+                      <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
                 </tbody>
                 <tfoot class="table-light">
                 <tr>
                   <td colspan="4" class="text-end fw-bold">Total:</td>
-                  <td colspan="2" class="fw-bold text-danger" id="totalVenta">$0.00</td>
+                  <td colspan="2" class="fw-bold text-danger" th:text="${compra?.getPrecioTotal()}" id="totalVenta">$0.00</td>
                 </tr>
                 </tfoot>
               </table>
             </div>
           </div>
           <div class="card-footer bg-white d-flex justify-content-between">
-            <button class="btn btn-outline-secondary" id="clearCart">
-              <i class="bi bi-x-circle me-1"></i> Limpiar
-            </button>
-            <button class="btn btn-danger" id="processSale">
-              <i class="bi bi-credit-card me-1"></i> Procesar Venta
-            </button>
+            <form th:action="@{/cajere/venta/procesar-venta}" method="post" class="d-flex justify-content-between  gap-2 w-100">
+              <a class="btn btn-outline-secondary" th:href="@{/cajere/venta/borrar-venta}">
+                <i class="bi bi-x-circle me-1"></i> Limpiar
+              </a>
+                <select class="form-select w-25" name="metodoPago" required>
+                  <option value="" disabled selected>Metodo de Pago</option>
+                  <option th:each="metodo : ${metodosPago}"
+                          th:value="${metodo}"
+                          th:text="${#strings.capitalize(metodo.name().toLowerCase())}">
+                  </option>
+                </select>
+              <button type="submit" class="btn btn-danger">
+                <i class="bi bi-credit-card me-1"></i> Procesar Venta
+              </button>
+            </form>
           </div>
         </div>
 
@@ -189,7 +221,8 @@
                 <div class="card border-danger h-100">
                   <div class="card-body py-2 d-flex flex-column">
                     <h6 class="card-title text-muted mb-2">Productos</h6>
-                    <p class="h4 text-danger mb-auto" id="resumenCantidad">0</p>
+                    <p class="h4 text-danger mb-auto" th:if="${compra != null} " th:text=" ${compra?.getCantidadProductos()}" id="resumenCantidad">0</p>
+                    <p class="h4 text-danger mb-auto" th:if="${compra == null}">0</p>
                   </div>
                 </div>
               </div>
@@ -197,7 +230,8 @@
                 <div class="card border-danger h-100">
                   <div class="card-body py-2 d-flex flex-column">
                     <h6 class="card-title text-muted mb-2">Total</h6>
-                    <p class="h4 text-danger mb-auto" id="resumenTotal">$0.00</p>
+                    <p class="h4 text-danger mb-auto" th:if="${compra == null}">$0.00</p>
+                    <p class="h4 text-danger mb-auto" th:if="${compra != null}" th:text="'$' + ${compra?.getPrecioTotal()}" id="resumenTotal">$0.00</p>
                   </div>
                 </div>
               </div>
@@ -207,36 +241,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal de confirmación -->
-  <div class="modal fade" id="confirmSaleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title">Confirmar Venta</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>¿Estás seguro de procesar esta venta por <span class="fw-bold text-danger" id="modalTotal">$0.00</span>?</p>
-          <div class="mb-3">
-            <label for="paymentMethod" class="form-label">Método de pago</label>
-            <select class="form-select" id="paymentMethod">
-              <option value="EFECTIVO">Efectivo</option>
-              <option value="TARJETA">Tarjeta</option>
-              <option value="TRANSFERENCIA">Transferencia</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" id="confirmSale">Confirmar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Incluir JS -->
-  <script th:src="@{/js/venta-vendedor.js}"></script>
 </main>
 </body>
 </html>

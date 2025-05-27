@@ -1,6 +1,7 @@
 package mx.aragon.unam.service.venta.detalleVenta;
 
 import mx.aragon.unam.model.entity.venta.DetalleVentaEntity;
+import mx.aragon.unam.model.entity.venta.VentaEntity;
 import mx.aragon.unam.repository.venta.DetalleVentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,10 @@ public class DetalleVentaServiceImpl implements DetalleVentaService {
     @Override
     public DetalleVentaEntity findById(Integer id) {
         return detalleVentaRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<DetalleVentaEntity> findByVenta(VentaEntity venta) {
+        return detalleVentaRepository.findByVenta(venta);
     }
 }

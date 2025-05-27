@@ -43,6 +43,7 @@ CREATE TABLE categorias (
 CREATE TABLE productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
+    ruta_imagen VARCHAR(255) NOT NULL,
     id_categoria INT,
     id_proveedor INT,
     precio_compra DECIMAL(12,2) UNSIGNED NOT NULL,
