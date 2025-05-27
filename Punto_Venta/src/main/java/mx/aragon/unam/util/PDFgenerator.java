@@ -7,6 +7,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import mx.aragon.unam.model.entity.pedido.DetallePedidoEntity;
 import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
+import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.model.entity.venta.DetalleVentaEntity;
 import mx.aragon.unam.model.entity.venta.VentaEntity;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -54,15 +55,34 @@ public class PDFgenerator {
         doc.add(Chunk.NEWLINE);
 
         // Tabla de productos
-        PdfPTable tabla = new PdfPTable(4);
+        PdfPTable tabla = new PdfPTable(5); // Imagen + Producto + Cant + Precio + Subtotal
         tabla.setWidthPercentage(100);
-        tabla.setWidths(new float[]{3f, 1f, 2f, 2f});
+        tabla.setWidths(new float[]{2f, 3f, 1f, 2f, 2f});
+
+        añadirEncabezado(tabla, "Imagen");
         añadirEncabezado(tabla, "Producto");
         añadirEncabezado(tabla, "Cant.");
         añadirEncabezado(tabla, "P. Unitario");
         añadirEncabezado(tabla, "Subtotal");
 
         for (DetalleVentaEntity d : detalles) {
+            ProductoEntity producto = d.getProducto();
+
+            // Ruta absoluta real de la imagen
+            String imagePath = "src/main/resources/static" + producto.getImagenPath();
+            try {
+                Image img = Image.getInstance(imagePath);
+                img.scaleToFit(50, 50);
+                PdfPCell imgCell = new PdfPCell(img);
+                imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                imgCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                tabla.addCell(imgCell);
+            } catch (Exception e) {
+                // Si la imagen no existe o falla, añade celda vacía
+                PdfPCell emptyCell = new PdfPCell(new Phrase("Sin imagen"));
+                emptyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                tabla.addCell(emptyCell);
+            }
             tabla.addCell(d.getProducto().getNombre());
             tabla.addCell(d.getCantidad().toString());
             tabla.addCell(String.format("$ %.2f", d.getPrecioUnitario()));
@@ -115,15 +135,33 @@ public class PDFgenerator {
         doc.add(Chunk.NEWLINE);
 
         // Tabla de productos
-        PdfPTable tabla = new PdfPTable(4);
+        PdfPTable tabla = new PdfPTable(5); // Imagen + Producto + Cant + Precio + Subtotal
         tabla.setWidthPercentage(100);
-        tabla.setWidths(new float[]{3f, 1f, 2f, 2f});
+        tabla.setWidths(new float[]{2f, 3f, 1f, 2f, 2f});
+
+        añadirEncabezado(tabla, "Imagen");
         añadirEncabezado(tabla, "Producto");
         añadirEncabezado(tabla, "Cant.");
         añadirEncabezado(tabla, "P. Unitario");
         añadirEncabezado(tabla, "Subtotal");
 
         for (DetallePedidoEntity d : detalles) {
+            ProductoEntity producto = d.getProducto();
+            // Ruta absoluta real de la imagen
+            String imagePath = "src/main/resources/static" + producto.getImagenPath();
+            try {
+                Image img = Image.getInstance(imagePath);
+                img.scaleToFit(50, 50);
+                PdfPCell imgCell = new PdfPCell(img);
+                imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                imgCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                tabla.addCell(imgCell);
+            } catch (Exception e) {
+                // Si la imagen no existe o falla, añade celda vacía
+                PdfPCell emptyCell = new PdfPCell(new Phrase("Sin imagen"));
+                emptyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                tabla.addCell(emptyCell);
+            }
             tabla.addCell(d.getProducto().getNombre());
             tabla.addCell(d.getCantidadSolicitada().toString());
             tabla.addCell(String.format("$ %.2f", d.getPrecioUnitario()));
