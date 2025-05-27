@@ -47,4 +47,10 @@
         @Column(name = "activo", nullable = false)
         private Boolean activo;
 
+        // Metodo para obtener la ruta de la imagen
+        @Transient // Esta anotación indica que no es un campo persistente en la base de datos
+        public String getImagenPath() {
+            return "/product-images/" + this.id + ".png";
+        }
+
     }
