@@ -5,11 +5,9 @@ Proyecto final de la materia de Temas Especiales de Programacion 2.
 ### Prioritarios
 - CRUD de usuarios
 - CRUD de pedidos
-- visualizacion de productos
-- Generacion de excel
-- generacion de pdf
-- Envio de archivos por correo electronico
+- Generacion de excel para admin
+- generacion de pdf para proveedores
 
 ### No prioritarios
-- CRUD en el resto de tablas
+- CRUD de proveedores
   
