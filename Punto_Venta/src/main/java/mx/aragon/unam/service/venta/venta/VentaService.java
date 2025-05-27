@@ -11,4 +11,6 @@ public interface VentaService {
     List<VentaEntity> findAll();
     void deleteById(Integer id);
     VentaEntity findById(Integer id);
+    Long countVentasDelDia();
+    Long totalVentasDelDia();
 }

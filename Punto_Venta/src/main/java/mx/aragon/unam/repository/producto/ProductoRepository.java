@@ -16,4 +16,7 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Intege
     List<ProductoEntity> buscarPorCategoriaYProveedor(
             @Param("idCategoria") Integer idCategoria,
             @   Param("idProveedor") Integer idProveedor);
+    @Query("SELECT p FROM productos p ORDER BY p.existencia ASC")
+    List<ProductoEntity> findAllOrderByExistenciaAsc();
+    List<ProductoEntity> findAllByProveedorId(Integer idProveedor);
 }

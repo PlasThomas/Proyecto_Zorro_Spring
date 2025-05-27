@@ -36,4 +36,14 @@ public class VentaServiceImpl implements VentaService {
     public VentaEntity findById(Integer id) {
         return ventaRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Long countVentasDelDia() {
+        return ventaRepository.countVentasDelDia();
+    }
+
+    @Override
+    public Long totalVentasDelDia() {
+        return ventaRepository.totalVentasDelDia();
+    }
 }

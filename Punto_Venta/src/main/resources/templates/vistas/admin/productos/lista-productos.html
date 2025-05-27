@@ -24,9 +24,6 @@
     <div class="card shadow-sm">
         <div class="card-header bg-custom-red text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0"><i class="bi bi-table me-2"></i> Lista de Productos</h5>
-            <a th:href="@{/admin/alta-productos}" class="btn btn-light btn-sm">
-                <i class="bi bi-plus-circle"></i> Nuevo Producto
-            </a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -59,12 +56,12 @@
                         </td>
                         <td>
                             <div class="d-flex">
-                                <a th:href="@{/admin/modificar-productos/{id}(id=${producto.id})}"
+                                <a
                                    class="btn btn-sm btn-outline-custom-red me-1"
                                    title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a th:href="@{/admin/eliminar-productos/{id}(id=${producto.id})}"
+                                <a
                                    class="btn btn-sm btn-outline-custom-red me-1"
                                    title="Eliminar"
                                    onclick="return confirm('¿Estás seguro de eliminar este producto?');">

@@ -13,4 +13,6 @@ public interface ProductoService {
     void deleteById(Integer id);
     ProductoEntity findById(Integer id);
     List<ProductoEntity> buscarPorCategoriaYProveedor(Integer categoriaId, Integer proveedorId);
+    List<ProductoEntity> findAllOrderByExistenciaAsc();
+    List<ProductoEntity> findAllByProveedorId(Integer idProveedor);
 }

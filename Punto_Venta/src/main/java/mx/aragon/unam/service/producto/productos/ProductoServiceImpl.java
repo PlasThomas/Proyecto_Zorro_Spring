@@ -42,5 +42,14 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.buscarPorCategoriaYProveedor(categoriaId, proveedorId);
     }
 
+    @Override
+    public List<ProductoEntity> findAllOrderByExistenciaAsc() {
+        return productoRepository.findAllOrderByExistenciaAsc();
+    }
+
+    @Override
+    public List<ProductoEntity> findAllByProveedorId(Integer idProveedor) {
+        return productoRepository.findAllByProveedorId(idProveedor);
+    }
 
 }

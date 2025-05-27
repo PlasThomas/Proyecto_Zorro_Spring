@@ -3,7 +3,6 @@ package mx.aragon.unam.model.entity.producto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +75,33 @@ public class ProductoSeleccionado {
         }
         return precioTotal;
     }
+
+    public BigDecimal getCostoTotal() {
+        if (productos == null || productos.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal totalCompra = BigDecimal.ZERO;
+        for (ProductosInter pi : productos) {
+            if (pi != null
+                    && pi.getProducto() != null
+                    && pi.getProducto().getPrecioCompra() != null
+                    && pi.getCantidad() != null) {
+                BigDecimal subtotal = pi.getProducto().getPrecioCompra().multiply(pi.getCantidad());
+                totalCompra = totalCompra.add(subtotal);
+            }
+        }
+        return totalCompra;
+    }
+
+    public BigDecimal getCantidad(ProductoEntity prod) {
+        return productos.stream()
+                .filter(p -> p.getProducto().getId().equals(prod.getId()))
+                .map(ProductosInter::getCantidad)
+                .findFirst()
+                .orElse(BigDecimal.ZERO);
+    }
+
     // Limpiar carrito
     public void clear() {
         productos.clear();

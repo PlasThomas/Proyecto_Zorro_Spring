@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{plantillas/plantilla_principal}">
+<head>
+    <title>Lista de Productos</title>
+</head>
+<body>
+<main class="flex-grow-1 p-4" layout:fragment="content">
+    <div th:if="${mensajeExito}" class="alert alert-success mb-3">
+        <i class="bi bi-check-circle-fill"></i>
+        <span th:text="${mensajeExito} ?: 'Exito'">
+              Exito
+            </span>
+    </div>
+    <div th:if="${mensajeError}" class="alert alert-danger mb-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span th:text="${mensajeError}?: 'Error'">
+              Error
+            </span>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-custom-red text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i> Lista de Pedidos</h5>
+            <a th:href="@{/admin/pedidos/alta}" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-circle"></i> Nuevo Pedido
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th scope="col">Proveedor</th>
+                        <th scope="col">Fecha de Realizacion</th>
+                        <th scope="col">Fecha de Entrga</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.proveedor.nombreEmpresa}"></td>
+                        <td th:text="${pedido.getFechaPedido()}"> </td>
+                        <td th:text="${pedido.getFechaEntrega()}"> </td>
+                        <td th:text="${pedido.getEstado()}"> </td>
+                        <td th:text="'$' + ${pedido.getTotal()}"> </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Paginación -->
+                <nav th:if="${totalPaginas > 1}">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" th:classappend="${paginaActual == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/productos(page=${paginaActual - 1})}">Anterior</a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPaginas - 1)}">
+                            <a th:text="${i + 1}"
+                               th:href="@{/categorias(page=${i})}"
+                               class="page-link"
+                               th:classappend="${i == paginaActual} ? 'active'"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${paginaActual == totalPaginas - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/categorias(page=${paginaActual + 1})}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

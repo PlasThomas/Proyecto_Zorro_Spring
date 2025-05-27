@@ -9,7 +9,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/product-images/**")
-                .addResourceLocations("file:/home/nesgerxt/productos/");
+                .addResourceLocations("file:/home/thomas/Documentos/Escuela/Octavo_semestre/Spring/ProyectoFinal/Proyecto_Zorro_Spring/productos");
         // Aqui cambias mi ruta de la carpeta personal o donde guardes la imagenes
     }
 }

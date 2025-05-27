@@ -65,7 +65,7 @@ public class VendedorController {
     private EmailService emailService;
 
     @GetMapping(value = "inicio")
-    public String vistaInicioCajere(Model model) {
+    public String vistaInicioCajere() {
         return "vistas/vendedor/inicio";
     }
 
@@ -300,7 +300,5 @@ public class VendedorController {
             model.addAttribute("productos", productoService.findAll());
         }
     }
-
-
 
 }

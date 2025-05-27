@@ -56,32 +56,6 @@ public class ProductosController {
         return "vistas/admin/productos/lista-productos";
     }
 
-    @RequestMapping(value = "/admin/alta-productos",method = RequestMethod.GET)
-    public String altaProductos(Model model) {
-        List<ProductoEntity> productos = productoService.findAll();
-        model.addAttribute("productos", productos);
-        return "vistas/productos/productos";
-    }
-
-    @RequestMapping(value = "/admin/alta-productos",method = RequestMethod.POST)
-    public String guardarProducto(Model model) {
-        List<ProductoEntity> productos = productoService.findAll();
-        model.addAttribute("productos", productos);
-        return "vistas/productos/productos";
-    }
-
-    @RequestMapping(value = "/admin/modificar-productos/{id}",method = RequestMethod.GET)
-    public String modificarProductos(@PathVariable("id") Integer id, Model model) {
-        List<ProductoEntity> productos = productoService.findAll();
-        model.addAttribute("productos", productos);
-        return "vistas/productos/productos";
-    }
-
-    @RequestMapping(value = "/admin/eliminar-productos/{id}",method = RequestMethod.GET)
-    public String bajaProductos(@PathVariable("id") Integer id, Model model) {
-        productoService.deleteById(id);
-        return "redirect:/admin/productos";
-    }
 
 //    <=================================================================================================================>
 //      END POINTS FINANZAS
@@ -92,13 +66,4 @@ public class ProductosController {
         return "vistas/finanzas/lista-productos";
     }
 
-//    <=================================================================================================================>
-//      END POINTS CAJERE
-
-    @RequestMapping(value = "/cajere/productos",method = RequestMethod.GET)
-    public String listaProductosCajere(Model model) {
-        List<ProductoEntity> productos = productoService.findAll();
-        model.addAttribute("productos", productos);
-        return "vistas/vendedor/lista-productos";
-    }
 }

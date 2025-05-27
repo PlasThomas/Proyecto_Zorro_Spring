@@ -1,14 +1,27 @@
 package mx.aragon.unam.controller;
 
+import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.model.entity.usuario.TipoUsuario;
+import mx.aragon.unam.service.producto.productos.ProductoService;
+import mx.aragon.unam.service.venta.venta.VentaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 @Controller
 public class InicioController {
+
+    @Autowired
+    private VentaService ventaService;
+    @Autowired
+    private ProductoService productoService;
+
     @RequestMapping(value = "/inicio", method = RequestMethod.GET)
     public String redirecionInicio() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,7 +49,14 @@ public class InicioController {
     }
 
     @RequestMapping(value = "/admin/inicio",method = RequestMethod.GET)
-    public String vistaInicioAdmin() {
+    public String vistaInicioAdmin(Model model) {
+        Long ventasHoy = ventaService.countVentasDelDia();
+        Long totalHoy = ventaService.totalVentasDelDia();
+        List<ProductoEntity> productos = productoService.findAllOrderByExistenciaAsc();
+        model.addAttribute("ventasHoy", ventasHoy);
+        model.addAttribute("totalHoy", totalHoy);
+        model.addAttribute("pedidosPendientes", 0);
+        model.addAttribute("productosOrdenadosPorStock", productos);
         return "vistas/admin/inicio";
     }
 
