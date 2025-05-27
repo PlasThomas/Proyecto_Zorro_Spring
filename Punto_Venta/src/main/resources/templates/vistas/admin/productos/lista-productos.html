@@ -4,79 +4,140 @@
       layout:decorate="~{plantillas/plantilla_principal}">
 <head>
     <title>Lista de Productos</title>
+    <style>
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .product-name-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
-    <main class="flex-grow-1 p-4" layout:fragment="content">
-        <!-- Tabla dinámica -->
-        <div class="card shadow-sm">
-            <div class="card-header bg-custom-red text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="bi bi-table me-2"></i> Lista de Productos</h5>
-                <a th:href="@{/admin/alta-productos}" class="btn btn-light btn-sm">
-                    <i class="bi bi-plus-circle"></i> Nuevo Producto
-                </a>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Categoría</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="producto : ${productos}">
-                            <td th:text="${producto.nombre}">Producto Ejemplo</td>
-                            <td th:text="${producto.categoria.nombre}">Electrónicos</td>
-                            <td th:text="${'$' + #numbers.formatDecimal(producto.precioVenta, 1, 2)}">999.99</td>
-                            <td>
-                                        <span th:class="${producto.existencia < 10} ? 'badge bg-danger' : 'badge bg-success'"
-                                              th:text="${producto.existencia}">50</span>
-                            </td>
-                            <td>
+<main class="flex-grow-1 p-4" layout:fragment="content">
+    <!-- Tabla dinámica -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-custom-red text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i> Lista de Productos</h5>
+            <a th:href="@{/admin/alta-productos}" class="btn btn-light btn-sm">
+                <i class="bi bi-plus-circle"></i> Nuevo Producto
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <td>
+                            <div class="product-name-container">
+                                <img th:src="@{'/product-images/' + ${producto.id} + '.png'}"
+                                     th:onerror="this.src='/images/default-product.png'"
+                                     class="product-image img-thumbnail"
+                                     alt="Imagen del producto"/>
+                                <span th:text="${producto.nombre}">Producto Ejemplo</span>
+                            </div>
+                        </td>
+                        <td th:text="${producto.categoria.nombre}">Electrónicos</td>
+                        <td th:text="${'$' + #numbers.formatDecimal(producto.precioVenta, 1, 2)}">999.99</td>
+                        <td>
+                                <span th:class="${producto.existencia < 10} ? 'badge bg-danger' : 'badge bg-success'"
+                                      th:text="${producto.existencia}">50</span>
+                        </td>
+                        <td>
+                            <div class="d-flex">
                                 <a th:href="@{/admin/modificar-productos/{id}(id=${producto.id})}"
-                                   class="btn btn-sm btn-outline-custom-red me-1">
+                                   class="btn btn-sm btn-outline-custom-red me-1"
+                                   title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a th:href="@{/admin/eliminar-productos/{id}(id=${producto.id})}"
-                                   class="btn btn-sm btn-outline-custom-red me-1">
+                                   class="btn btn-sm btn-outline-custom-red me-1"
+                                   title="Eliminar"
+                                   onclick="return confirm('¿Estás seguro de eliminar este producto?');">
                                     <i class="bi bi-trash"></i>
                                 </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <!-- Paginación -->
-                    <nav th:if="${totalPaginas > 1}">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item" th:classappend="${paginaActual == 0} ? 'disabled'">
-                                <a class="page-link" th:href="@{/productos(page=${paginaActual - 1})}">Anterior</a>
-                            </li>
-                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPaginas - 1)}">
-                                <a th:text="${i + 1}"
-                                   th:href="@{/productos(page=${i})}"
-                                   class="page-link"
-                                   th:classappend="${i == paginaActual} ? 'active'"></a>
-                            </li>
-                            <li class="page-item" th:classappend="${paginaActual == totalPaginas - 1} ? 'disabled'">
-                                <a class="page-link" th:href="@{/productos(page=${paginaActual + 1})}">Siguiente</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- Paginación -->
+                <nav th:if="${totalPaginas > 1}">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" th:classappend="${paginaActual == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/productos(page=${paginaActual - 1})}">Anterior</a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPaginas - 1)}">
+                            <a th:text="${i + 1}"
+                               th:href="@{/productos(page=${i})}"
+                               class="page-link"
+                               th:classappend="${i == paginaActual} ? 'active'"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${paginaActual == totalPaginas - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/productos(page=${paginaActual + 1})}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
-    </main>
+    </div>
+</main>
+
+<!-- Modal para confirmar eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este producto?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a id="confirmDeleteButton" class="btn btn-custom-red">Eliminar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    function confirmDelete(button) {
-        const id = button.getAttribute('data-id');
-        if (confirm('¿Estás seguro de eliminar este producto?')) {
-            window.location.href = `/admin/eliminar-productos/{id}`;
-        }
+    // Función para manejar la eliminación con confirmación
+    function setupDeleteButtons() {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const deleteUrl = this.getAttribute('href');
+                const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+
+                document.getElementById('confirmDeleteButton').onclick = function() {
+                    window.location.href = deleteUrl;
+                };
+
+                modal.show();
+            });
+        });
     }
+
+    // Inicializar cuando el DOM esté cargado
+    document.addEventListener('DOMContentLoaded', function() {
+        setupDeleteButtons();
+    });
 </script>
 </body>
 </html>
