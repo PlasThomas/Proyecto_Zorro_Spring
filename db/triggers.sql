@@ -1,19 +1,28 @@
-use punto_venta;
+USE punto_venta;
 
 DELIMITER //
+
+-- Trigger para actualización de detalle de pedido
 CREATE TRIGGER after_detalle_pedido_update
 AFTER UPDATE ON detalle_pedido
 FOR EACH ROW
 BEGIN
     DECLARE v_existencia_actual DECIMAL(10,3);
     DECLARE v_estado_pedido ENUM('PENDIENTE', 'RECIBIDO', 'CANCELADO');
+    DECLARE v_id_usuario INT;
     
-    -- Obtener el estado actual del pedido
-    SELECT estado INTO v_estado_pedido FROM pedidos_proveedor WHERE id_pedido = NEW.id_pedido;
+    -- Obtener el estado actual del pedido y el usuario
+    SELECT estado, id_usuario_registro INTO v_estado_pedido, v_id_usuario 
+    FROM pedidos_proveedor WHERE id_pedido = NEW.id_pedido;
     
-    -- Solo registrar si el pedido está marcado como RECIBIDO y hay diferencia en cantidades
+    -- Solo procesar si el pedido está marcado como RECIBIDO y hay diferencia en cantidades
     IF v_estado_pedido = 'RECIBIDO' AND (OLD.cantidad_recibida <> NEW.cantidad_recibida OR OLD.cantidad_recibida IS NULL) THEN
-        -- Obtener existencia actual del producto
+        -- Actualizar existencia del producto primero
+        UPDATE productos 
+        SET existencia = existencia + (NEW.cantidad_recibida - IFNULL(OLD.cantidad_recibida, 0))
+        WHERE id_producto = NEW.id_producto;
+        
+        -- Obtener la nueva existencia actual
         SELECT existencia INTO v_existencia_actual FROM productos WHERE id_producto = NEW.id_producto;
         
         -- Registrar el movimiento de entrada
@@ -35,21 +44,29 @@ BEGIN
             v_existencia_actual,
             NEW.id_pedido,
             'PEDIDO',
-            (SELECT id_usuario_registro FROM pedidos_proveedor WHERE id_pedido = NEW.id_pedido),
+            v_id_usuario,
             CONCAT('Recibo de pedido #', NEW.id_pedido)
         );
     END IF;
 END//
-DELIMITER ;
 
-DELIMITER //
+-- Trigger para inserción de detalle de venta
 CREATE TRIGGER after_detalle_venta_insert
 AFTER INSERT ON detalle_venta
 FOR EACH ROW
 BEGIN
     DECLARE v_existencia_actual DECIMAL(10,3);
+    DECLARE v_id_vendedor INT;
     
-    -- Obtener existencia actual del producto
+    -- Obtener el vendedor de la venta
+    SELECT id_vendedor INTO v_id_vendedor FROM ventas WHERE id_venta = NEW.id_venta;
+    
+    -- Actualizar primero la existencia del producto
+    UPDATE productos 
+    SET existencia = existencia - NEW.cantidad
+    WHERE id_producto = NEW.id_producto;
+    
+    -- Obtener la nueva existencia actual
     SELECT existencia INTO v_existencia_actual FROM productos WHERE id_producto = NEW.id_producto;
     
     -- Registrar el movimiento de salida
@@ -67,29 +84,16 @@ BEGIN
         NEW.id_producto,
         NOW(),
         'SALIDA',
-        -NEW.cantidad, -- Negativo porque es salida
+        -NEW.cantidad,
         v_existencia_actual,
         NEW.id_venta,
         'VENTA',
-        (SELECT id_vendedor FROM ventas WHERE id_venta = NEW.id_venta),
+        v_id_vendedor,
         CONCAT('Venta #', NEW.id_venta)
     );
 END//
-DELIMITER ;
 
-DELIMITER //
-CREATE TRIGGER after_historial_productos_insert
-AFTER INSERT ON historial_productos
-FOR EACH ROW
-BEGIN
-    -- Actualizar la existencia del producto
-    UPDATE productos 
-    SET existencia = existencia + NEW.cantidad 
-    WHERE id_producto = NEW.id_producto;
-END//
-DELIMITER ;
-
-DELIMITER //
+-- Trigger para inserción de pedidos a proveedores
 CREATE TRIGGER after_pedidos_proveedor_insert
 AFTER INSERT ON pedidos_proveedor
 FOR EACH ROW
@@ -112,9 +116,8 @@ BEGIN
         'Creación de nuevo pedido'
     );
 END//
-DELIMITER ;
 
-DELIMITER //
+-- Trigger para actualización de pedidos a proveedores
 CREATE TRIGGER after_pedidos_proveedor_update
 AFTER UPDATE ON pedidos_proveedor
 FOR EACH ROW
@@ -167,15 +170,24 @@ BEGIN
         );
     END IF;
 END//
-DELIMITER ;
 
-DELIMITER //
+-- Trigger para actualización de productos
 CREATE TRIGGER after_productos_update
 AFTER UPDATE ON productos
 FOR EACH ROW
 BEGIN
+    DECLARE v_id_admin INT;
+    
     -- Registrar ajustes manuales de existencia
     IF OLD.existencia <> NEW.existencia THEN
+        -- Obtener un usuario administrador
+        SELECT id_usuario INTO v_id_admin 
+        FROM usuarios 
+        WHERE tipo = 'ADMINISTRADOR' AND activo = TRUE
+        ORDER BY id_usuario 
+        LIMIT 1;
+        
+        -- Registrar el ajuste
         INSERT INTO historial_productos (
             id_producto, 
             fecha_movimiento, 
@@ -192,9 +204,10 @@ BEGIN
             NEW.existencia - OLD.existencia,
             NEW.existencia,
             'AJUSTE_MANUAL',
-            (SELECT id_usuario FROM usuarios WHERE tipo = 'ADMINISTRADOR' ORDER BY id_usuario DESC LIMIT 1),
+            v_id_admin,
             CONCAT('Ajuste manual de inventario. Existencia anterior: ', OLD.existencia)
         );
     END IF;
 END//
+
 DELIMITER ;
