@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CategoriasController {
 
     @Autowired
     private CategoriaService categoriaService;
+
 
     @RequestMapping(value = "/admin/categorias", method = RequestMethod.GET)
     public String listaCategoria(Model model){
@@ -37,12 +39,13 @@ public class CategoriasController {
     }
 
     @RequestMapping(value = "/admin/alta-categoria", method = RequestMethod.POST)
-    public String guardarCategoria(@Valid @ModelAttribute(value = "categoria") CategoriaEntity categoria, BindingResult result, Model model) {
+    public String guardarCategoria(@Valid @ModelAttribute(value = "categoria") CategoriaEntity categoria, BindingResult result, RedirectAttributes redirectAttributes , Model model) {
         System.out.println("ID recibido del formulario: " + categoria.getId());
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
                 System.out.println("Error: " + error.getDefaultMessage());
             }
+            model.addAttribute("contenido","Error al guardar la categoria");
             model.addAttribute("mensajeError", "Error al guardar la categoria");
             return "vistas/admin/categorias/alta-categoria";
         }
@@ -54,8 +57,8 @@ public class CategoriasController {
                 existente.setActivo(categoria.getActivo());
                 categoriaService.save(existente);
             } else {
-                model.addAttribute("mensajeError", "La categoría a modificar no existe");
-                return "vistas/admin/categorias/alta-categoria";
+                redirectAttributes.addFlashAttribute("mensajeError", "La categoría a modificar no existe");
+                return "redirect:/admin/categorias";
             }
         } else {
             categoriaService.save(categoria);
@@ -78,6 +81,7 @@ public class CategoriasController {
     @RequestMapping(value = "/admin/eliminar-categoria/{id}", method = RequestMethod.GET)
     public String eliminarCategoria(@PathVariable("id") short id, Model model) {
         categoriaService.deleteById(id);
+        model.addAttribute("mensajeExito", "Categoria eliminada con éxito");
         return "redirect:/admin/categorias";
     }
 }
