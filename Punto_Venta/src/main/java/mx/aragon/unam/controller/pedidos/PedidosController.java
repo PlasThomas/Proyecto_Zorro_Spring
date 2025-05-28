@@ -6,7 +6,7 @@ import mx.aragon.unam.model.entity.pedido.EstadoPedido;
 import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
 import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.model.entity.producto.ProductoSeleccionado;
-import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
+import mx.aragon.unam.model.entity.proveedor.ProveedorEntity;
 import mx.aragon.unam.model.entity.usuario.TipoUsuario;
 import mx.aragon.unam.model.entity.usuario.UsuarioEntity;
 import mx.aragon.unam.service.pedidos.detallePedido.DetallePedidoService;

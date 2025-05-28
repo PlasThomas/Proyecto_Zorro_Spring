@@ -5,7 +5,7 @@
     import lombok.Builder;
     import lombok.Data;
     import lombok.NoArgsConstructor;
-    import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
+    import mx.aragon.unam.model.entity.proveedor.ProveedorEntity;
 
     import java.math.BigDecimal;
 

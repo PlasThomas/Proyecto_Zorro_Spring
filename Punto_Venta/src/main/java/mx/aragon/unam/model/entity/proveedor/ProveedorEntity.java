@@ -1,4 +1,4 @@
-package mx.aragon.unam.model.entity.provedor;
+package mx.aragon.unam.model.entity.proveedor;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
