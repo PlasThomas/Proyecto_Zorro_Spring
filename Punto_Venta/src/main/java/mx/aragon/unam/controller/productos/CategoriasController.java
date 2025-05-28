@@ -50,6 +50,8 @@ public class CategoriasController {
             CategoriaEntity existente = categoriaService.findById(categoria.getId());
             if (existente != null) {
                 existente.setNombre(categoria.getNombre());
+                existente.setDetalles(categoria.getDetalles());
+                existente.setActivo(categoria.getActivo());
                 categoriaService.save(existente);
             } else {
                 model.addAttribute("mensajeError", "La categoría a modificar no existe");

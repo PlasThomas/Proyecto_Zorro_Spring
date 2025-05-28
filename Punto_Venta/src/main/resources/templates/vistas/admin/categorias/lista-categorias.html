@@ -28,11 +28,9 @@
                             <tr th:each="categoria : ${categorias}">
                                 <td th:text="${categoria.nombre}"></td>
                                 <td>
-                                    <span th:class="${categoria.activo == 1} ?
-                                          'badge bg-danger' : 'badge bg-success'">
-                                        <i th:class="${categoria.activo == 1} ?
-                                           'bi bi-x-circle' : 'bi bi-check-circle'"></i>
-                                        <span th:text="${categoria.activo == 1} ? ' Inactiva' : ' Activa'"></span>
+                                    <span th:class="${categoria.activo} ? 'badge bg-success' : 'badge bg-danger'">
+                                        <i th:class="${categoria.activo} ? 'bi bi-check-circle' : 'bi bi-x-circle'"></i>
+                                        <span th:text="${categoria.activo} ? ' Activa' : ' Inactiva'"></span>
                                     </span>
                                 </td>
                                 <td>
