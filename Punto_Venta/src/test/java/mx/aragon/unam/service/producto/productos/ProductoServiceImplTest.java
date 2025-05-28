@@ -3,7 +3,7 @@ package mx.aragon.unam.service.producto.productos;
 import mx.aragon.unam.model.entity.producto.CategoriaEntity;
 import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.model.entity.producto.UnidadMedida;
-import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
+import mx.aragon.unam.model.entity.proveedor.ProveedorEntity;
 import mx.aragon.unam.repository.producto.ProductoRepository;
 import mx.aragon.unam.repository.provedor.ProveedorRepository;
 import mx.aragon.unam.service.producto.categorias.CategoriaService;

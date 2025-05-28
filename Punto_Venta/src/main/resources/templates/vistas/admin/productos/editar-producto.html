@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{plantillas/plantilla_principal}">
+<head>
+    <title>Editar Producto</title>
+</head>
+<body>
+<main class="flex-grow-1 p-4" layout:fragment="content">
+    <div class="card shadow-sm">
+        <div class="card-header bg-custom-red text-white">
+            <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i> Editar Producto</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/productos/editar/{id}(id=${producto.id})}"
+                  th:object="${producto}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <input type="hidden" th:field="*{id}" />
+
+                <!-- Campo oculto para mantener la imagen existente -->
+                <input type="hidden" name="imagenActual" th:value="${imagenActual}" />
+
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="categoria" class="form-label">Categoría:</label>
+                    <select id="categoria" th:field="*{categoria.id}" class="form-select" required>
+                        <option value="" disabled>Selecciona una categoría</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.id}"
+                                th:text="${cat.nombre}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="proveedor" class="form-label">Proveedor:</label>
+                    <select id="proveedor" th:field="*{proveedor.id}" class="form-select" required>
+                        <option value="" disabled>Selecciona un proveedor</option>
+                        <option th:each="prov : ${proveedores}"
+                                th:value="${prov.id}"
+                                th:text="${prov.nombreEmpresa}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="precioCompra" class="form-label">Precio de Compra:</label>
+                    <input type="number" id="precioCompra" th:field="*{precioCompra}" step="0.01" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="precioVenta" class="form-label">Precio de Venta:</label>
+                    <input type="number" id="precioVenta" th:field="*{precioVenta}" step="0.01" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="existencia" class="form-label">Existencia:</label>
+                    <input type="number" id="existencia" th:field="*{existencia}" step="0.01" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="unidadMedida" class="form-label">Unidad de Medida:</label>
+                    <select id="unidadMedida" th:field="*{unidadMedida}" class="form-select" required>
+                        <option value="" disabled>Selecciona una unidad</option>
+                        <option th:each="um : ${T(mx.aragon.unam.model.entity.producto.UnidadMedida).values()}"
+                                th:value="${um}"
+                                th:text="${um}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" id="activo" th:field="*{activo}" class="form-check-input" />
+                    <label for="activo" class="form-check-label">Activo</label>
+                </div>
+
+                <button type="submit" class="btn btn-custom-red">Guardar</button>
+                <a href="/productos" class="btn btn-secondary ms-2">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
