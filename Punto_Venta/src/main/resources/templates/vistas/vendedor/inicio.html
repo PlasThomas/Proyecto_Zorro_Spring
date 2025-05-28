@@ -129,7 +129,7 @@
                   </td>
                   <td>
                     <form th:action="@{/cajere/venta/agregar-producto/{id}(id=${producto.id})}" th:object="${producto}" method="post">
-                      <input type="hidden" name="idproduftos" th:value="${producto?.id}">
+                      <input type="hidden" name="idproductos" th:value="${producto?.id}">
                         <button class="btn btn-sm btn-outline-danger add-product" type="submit">
                           <i class="bi bi-plus-lg"></i>
                         </button>
@@ -169,7 +169,7 @@
                     <small class="text-muted" th:text="${product.producto.categoria.nombre} + ' · ' + ${product.producto.proveedor.nombreEmpresa}">Detalle</small>
                   </td>
                   <td class="text-danger fw-bold" th:text="'$' + ${#numbers.formatDecimal(product.producto.precioVenta, 1, 2)}">$0.00</td>
-                  <td class="text-danger fw-bold" th:text="${product.cantidad}" >
+                  <td class="text-danger fw-bold" th:text="${product.cantidad}" > </td>
                   <td class="text-danger fw-bold" th:text="'$' + ${product.producto.precioVenta * product.cantidad}" >
                   </td>
                   <td>

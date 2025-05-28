@@ -10,6 +10,7 @@ import mx.aragon.unam.model.entity.pedido.PedidoProveedorEntity;
 import mx.aragon.unam.model.entity.producto.ProductoEntity;
 import mx.aragon.unam.model.entity.venta.DetalleVentaEntity;
 import mx.aragon.unam.model.entity.venta.VentaEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,8 @@ import java.util.List;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class PDFgenerator {
+    static String basePath = "/home/thomas/Documentos/Escuela/Octavo_semestre/Spring/ProyectoFinal/Proyecto_Zorro_Spring/productos/";
+
     public static String generarPDFVenta(VentaEntity venta, List<DetalleVentaEntity> detalles, String logoPath, String outputPath) throws Exception {
         Document doc = new Document(PageSize.A4);
         PdfWriter.getInstance(doc, new FileOutputStream(outputPath));
@@ -45,8 +48,8 @@ public class PDFgenerator {
         doc.add(new Paragraph("ID Venta: " + venta.getIdVenta()));
 
         LocalDateTime fecha = venta.getFechaVenta();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); // Personaliza el formato
-        String fechaFormateada = sdf.format(fecha);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaFormateada = venta.getFechaVenta().format(formatter);
 
         doc.add(new Paragraph("Fecha: " + fechaFormateada));
         doc.add(new Paragraph("Cliente: " + venta.getCliente().getNombreCompleto()));
@@ -67,9 +70,7 @@ public class PDFgenerator {
 
         for (DetalleVentaEntity d : detalles) {
             ProductoEntity producto = d.getProducto();
-
-            // Ruta absoluta real de la imagen
-            String imagePath = "src/main/resources/static" + producto.getImagenPath();
+            String imagePath = basePath + producto.getId() + ".png";
             try {
                 Image img = Image.getInstance(imagePath);
                 img.scaleToFit(50, 50);
@@ -148,7 +149,7 @@ public class PDFgenerator {
         for (DetallePedidoEntity d : detalles) {
             ProductoEntity producto = d.getProducto();
             // Ruta absoluta real de la imagen
-            String imagePath = "src/main/resources/static" + producto.getImagenPath();
+            String imagePath = basePath + producto.getId() + ".png";
             try {
                 Image img = Image.getInstance(imagePath);
                 img.scaleToFit(50, 50);

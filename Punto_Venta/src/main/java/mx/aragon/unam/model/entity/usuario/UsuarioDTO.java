@@ -1,5 +1,7 @@
 package mx.aragon.unam.model.entity.usuario;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -31,13 +33,18 @@ public class UsuarioDTO {
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String password;
 
+    @NotBlank
     @Pattern(regexp = "\\d{10}", message = "El teléfono debe tener 10 dígitos")
     private String telefono;
+
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario tipo = TipoUsuario.CLIENTE; // o el valor por defecto deseado
 
     @NotBlank(message = "La dirección es obligatoria")
     @Size(min = 10, message = "La dirección debe tener al menos 10 caracteres")
     private String direccion;
 
+    @NotBlank
     @Pattern(regexp = "^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$", message = "El RFC no es válido")
     private String rfc;
 

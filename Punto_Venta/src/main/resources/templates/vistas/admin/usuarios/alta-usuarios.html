@@ -1,10 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{plantillas/plantilla_principal}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Registro de Usuario</title>
+    <link th:href="@{/css/venta-vendedor.css}" rel="stylesheet">
 </head>
 <body>
+<main layout:fragment="content">
+    <div th:if="${mensajeExito}" class="alert alert-success mb-3">
+        <i class="bi bi-check-circle-fill"></i>
+        <span th:text="${mensajeExito} ?: 'Éxito'">
+            Éxito
+        </span>
+    </div>
+    <div th:if="${mensajeError}" class="alert alert-danger mb-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span th:text="${mensajeError}?: 'Error'">
+            Error
+        </span>
+    </div>
+    <a th:href="@{/admin/usuarios/}" class="btn btn-danger me-md-2">
+        <i class="bi bi-arrow-bar-left me-2"></i> Cancelar
+    </a>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <!-- Card contenedora -->
+                <div class="card shadow-lg border-0 rounded-3">
+                    <!-- Encabezado con icono -->
+                    <div class="card-header bg-danger text-white py-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h3 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i>Registro de Usuario</h3>
+                            <i class="bi bi-person-gear fs-1"></i>
+                        </div>
+                    </div>
 
+                    <div class="card-body p-4 p-md-5">
+                        <form th:action="@{/admin/usuarios/alta}" method="post" th:object="${usuario}" class="needs-validation" novalidate>
+                            <!-- Sección de Información Personal -->
+                            <div class="mb-4">
+                                <h5 class="text-danger mb-3"><i class="bi bi-person-badge me-2"></i>Información Personal</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="nombre" name="nombre"
+                                                   th:field="*{nombre}" placeholder=" " required
+                                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}">
+                                            <label for="nombre"><i class="bi bi-person me-2"></i>Nombre</label>
+                                            <div class="invalid-feedback">Ingrese un nombre válido (2-50 caracteres)</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="apellido" name="apellido"
+                                                   th:field="*{apellido}" placeholder=" " required
+                                                   pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}">
+                                            <label for="apellido"><i class="bi bi-person me-2"></i>Apellido</label>
+                                            <div class="invalid-feedback">Ingrese un apellido válido</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <!-- Selección de Tipo de Usuario -->
+                                <h5 class="text-danger mb-3"><i class="bi bi-ui-checks me-2"></i>Rol Asignado</h5>
+                                <div class="row g-3">
+                                    <select class="form-select" id="tipo" name="tipo" required>
+                                        <option value="">Seleccione un Rol</option>
+                                        <option value="VENDEDOR">Cajero/Vendedor</option>
+                                        <option value="FINANZAS">Finanzas</option>
+                                    </select>
+                                    <div class="invalid-feedback">Seleccione un tipo de usuario</div>
+                                </div>
+                            </div>
+
+                            <!-- Sección de Contacto -->
+                            <div class="mb-4">
+                                <h5 class="text-danger mb-3"><i class="bi bi-telephone me-2"></i>Información de Contacto</h5>
+
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           th:field="*{email}" placeholder=" " required
+                                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                    <label for="email"><i class="bi bi-envelope me-2"></i>Correo Electrónico</label>
+                                    <div class="invalid-feedback">Por favor ingrese un email válido</div>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="tel" class="form-control" id="telefono" name="telefono" minlength="10"
+                                           th:field="*{telefono}" placeholder=" "
+                                           pattern="[0-9]{10}">
+                                    <label for="telefono"><i class="bi bi-phone me-2"></i>Teléfono (10 dígitos)</label>
+                                    <div class="invalid-feedback">Ingrese 10 dígitos sin espacios ni guiones</div>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="tel" class="form-control" id="direccion" name="direccion"
+                                           th:field="*{direccion}" placeholder=" " required minlength="10" >
+                                    <label for="direccion"><i class="bi bi-house-door me-2"></i>Direccion</label>
+                                    <div class="invalid-feedback">Ingrese su Direccion</div>
+                                </div>
+                            </div>
+
+                            <!-- Sección de Datos Fiscales (opcional para empleados) -->
+                            <div class="mb-4">
+                                <h5 class="text-danger mb-3"><i class="bi bi-file-earmark-text me-2"></i>Datos Fiscales</h5>
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="rfc" name="rfc" maxlength="13"
+                                           th:field="*{rfc}" placeholder=" "
+                                           pattern="^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$">
+                                    <label for="rfc"><i class="bi bi-file-earmark-text me-2"></i>RFC</label>
+                                    <div class="invalid-feedback">Ingrese un RFC válido</div>
+                                </div>
+                            </div>
+
+                            <!-- Sección de Seguridad -->
+                            <div class="mb-4">
+                                <h5 class="text-danger mb-3"><i class="bi bi-shield-lock me-2"></i>Seguridad</h5>
+
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" id="password" name="password"
+                                           placeholder=" " required minlength="8">
+                                    <label for="password"><i class="bi bi-key me-2"></i>Contraseña</label>
+                                    <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
+                                </div>
+                                <div class="form-text mt-1">Mínimo 8 caracteres</div>
+
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="confirmarContrasena"
+                                           name="confirmarContrasena" placeholder=" " required minlength="8">
+                                    <label for="confirmarContrasena"><i class="bi bi-key-fill me-2"></i>Confirmar Contraseña</label>
+                                    <div class="invalid-feedback">Las contraseñas deben coincidir</div>
+                                </div>
+                            </div>
+
+                            <!-- Botón de envío -->
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-danger btn-lg fw-bold py-3">
+                                    <i class="bi bi-person-plus-fill me-2"></i> Registrar Usuario
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para validación -->
+    <script>
+        (() => {
+            'use strict'
+
+            const forms = document.querySelectorAll('.needs-validation')
+            const password = document.getElementById('password')
+            const confirmPassword = document.getElementById('confirmarContrasena')
+
+            function validatePassword() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Las contraseñas no coinciden")
+                } else {
+                    confirmPassword.setCustomValidity('')
+                }
+            }
+
+            password.onchange = validatePassword
+            confirmPassword.onkeyup = validatePassword
+
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</main>
 </body>
 </html>
