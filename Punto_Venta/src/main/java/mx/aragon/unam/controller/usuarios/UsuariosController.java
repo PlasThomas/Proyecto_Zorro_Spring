@@ -37,37 +37,72 @@ public class UsuariosController {
         return "vistas/admin/usuarios/alta-usuarios";
     }
 
-    @PostMapping(value = "alta")
-    public String guardarUsuarios(@Valid @ModelAttribute("usuario") UsuarioEntity usuario,
-                                  BindingResult result,
-                                  RedirectAttributes redirectAttributes,
-                                  Model model) {
-        if (result.hasErrors() || usuario.getTipo() == TipoUsuario.ADMINISTRADOR || usuario.getTipo() == TipoUsuario.CLIENTE || usuario.getTipo() == null) {
-            for (ObjectError error : result.getAllErrors()) {
-                System.out.println("Error: " + error.getDefaultMessage());
+    @PostMapping("alta")
+    public String guardarUsuarios(
+            @Valid @ModelAttribute("usuario") UsuarioEntity usuario,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        boolean esNuevo = (usuario.getId() == null);
+
+        // 1) Validaciones básicas
+        if (result.hasErrors()
+                || usuario.getTipo() == null
+                || usuario.getTipo() == TipoUsuario.ADMINISTRADOR
+                || usuario.getTipo() == TipoUsuario.CLIENTE) {
+            model.addAttribute("mensajeError", "Datos inválidos o rol no permitido");
+            return "vistas/admin/usuarios/alta-usuarios";
+        }
+
+        // 2) Validar email único
+        if (esNuevo) {
+            if (usuarioService.findByEmail(usuario.getEmail()).isPresent()) {
+                model.addAttribute("mensajeError", "El email ya está registrado");
+                return "vistas/admin/usuarios/alta-usuarios";
             }
-            model.addAttribute("mensajeError", "Fallo el registro");
-            return "vistas/admin/usuarios/alta-usuarios";
+        } else {
+            UsuarioEntity existente = usuarioService.findById(usuario.getId());
+            if (existente == null) {
+                model.addAttribute("mensajeError", "El usuario a modificar no existe");
+                return "vistas/admin/usuarios/alta-usuarios";
+            }
+            // Si cambió el email, verificar unicidad
+            if (!existente.getEmail().equals(usuario.getEmail())
+                    && usuarioService.findByEmail(usuario.getEmail()).isPresent()) {
+                model.addAttribute("mensajeError", "El email ya está registrado por otro usuario");
+                return "vistas/admin/usuarios/alta-usuarios";
+            }
         }
 
-        if (usuario.getContrasenaHash() == null || usuario.getContrasenaHash().isEmpty()) {
-            model.addAttribute("mensajeError", "La contraseña es requerida");
-            return "vistas/admin/usuarios/alta-usuarios";
+        // 3) Gestionar contraseña
+        if (esNuevo) {
+            // en creación, es obligatorio enviar contraseña
+            if (usuario.getContrasenaHash() == null || usuario.getContrasenaHash().isEmpty()) {
+                model.addAttribute("mensajeError", "La contraseña es requerida");
+                return "vistas/admin/usuarios/alta-usuarios";
+            }
+            usuario.setContrasenaHash(passwordEncoder.encode(usuario.getContrasenaHash()));
+        } else {
+            // en edición:
+            if (usuario.getContrasenaHash() != null && !usuario.getContrasenaHash().isEmpty()) {
+                // si envían nueva contraseña, la codificamos
+                usuario.setContrasenaHash(passwordEncoder.encode(usuario.getContrasenaHash()));
+            } else {
+                // si no, conservamos la anterior
+                UsuarioEntity existente = usuarioService.findById(usuario.getId());
+                usuario.setContrasenaHash(existente.getContrasenaHash());
+            }
         }
 
-        UsuarioEntity usuarioS = UsuarioEntity.builder()
-                .email(usuario.getEmail())
-                .contrasenaHash(passwordEncoder.encode(usuario.getContrasenaHash()))
-                .tipo(usuario.getTipo())
-                .nombreCompleto(usuario.getNombreCompleto())
-                .telefono(usuario.getTelefono())
-                .direccion(usuario.getDireccion())
-                .rfc(usuario.getRfc())
-                .build();
-        usuarioService.save(usuarioS);
-        redirectAttributes.addFlashAttribute("mensajeExito", "Cliente guardado correctamente");
+        // 4) Guardar (INSERT o UPDATE según traiga id o no)
+        usuarioService.save(usuario);
+
+        redirectAttributes.addFlashAttribute("mensajeExito",
+                esNuevo ? "Usuario creado correctamente" : "Usuario modificado correctamente");
         return "redirect:/admin/usuarios/";
     }
+
 
     @GetMapping(value = "modificar/{id}")
     public String modificarUsuario(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes,Model model) {

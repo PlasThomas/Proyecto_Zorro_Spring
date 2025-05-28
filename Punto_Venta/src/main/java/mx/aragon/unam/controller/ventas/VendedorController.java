@@ -102,9 +102,10 @@ public class VendedorController {
     }
 
     @PostMapping("venta/confirmar-cliente")
-    public String confirmarCliente(@RequestParam("clienteId") Integer clienteId, Model model) {
+    public String confirmarCliente(@RequestParam("clienteId") String clienteId, Model model) {
         try {
-            this.cliente = usuarioService.findById(clienteId);
+            Integer icliente = Integer.parseInt(clienteId);
+            this.cliente = usuarioService.findById(icliente);
             if (this.cliente != null && this.cliente.getTipo() == TipoUsuario.CLIENTE) {
                 cargarDatosProductos(model);
                 model.addAttribute("cliente", this.cliente);
@@ -121,7 +122,7 @@ public class VendedorController {
 
     @GetMapping("venta/buscar-productos")
     public String buscarProductos(
-            @RequestParam(required = false) Integer codigo,
+            @RequestParam(required = false) String codigo,
             @RequestParam(required = false) Integer categoriaId,
             @RequestParam(required = false) Integer proveedorId,
             HttpSession session,
@@ -131,7 +132,8 @@ public class VendedorController {
             cargarDatosProductos(model);
             List<ProductoEntity> productosFiltrados = new ArrayList<>();
             if (codigo != null) {
-                ProductoEntity producto = productoService.findById(codigo);
+                Integer codigoInt = Integer.parseInt(codigo);
+                ProductoEntity producto = productoService.findById(codigoInt);
                 if (producto != null) {
                     this.carrito.add(producto);
                 }else{
