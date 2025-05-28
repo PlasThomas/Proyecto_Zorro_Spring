@@ -1,7 +1,7 @@
 package mx.aragon.unam.controller.proveedores;
 
 import jakarta.validation.Valid;
-import mx.aragon.unam.model.entity.provedor.ProveedorEntity;
+import mx.aragon.unam.model.entity.proveedor.ProveedorEntity;
 import mx.aragon.unam.service.provedor.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
