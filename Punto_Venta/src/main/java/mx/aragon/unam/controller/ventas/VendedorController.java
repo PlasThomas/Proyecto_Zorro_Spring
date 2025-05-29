@@ -130,14 +130,18 @@ public class VendedorController {
 
         try {
             cargarDatosProductos(model);
-            List<ProductoEntity> productosFiltrados = new ArrayList<>();
-            if (codigo != null) {
-                Integer codigoInt = Integer.parseInt(codigo);
-                ProductoEntity producto = productoService.findById(codigoInt);
-                if (producto != null) {
-                    this.carrito.add(producto);
-                }else{
-                    model.addAttribute("mensajeError", "Producto no encontrado");
+            List<ProductoEntity> productosFiltrados;
+            if (codigo != null && !codigo.trim().isEmpty()) {
+                try {
+                    Integer codigoInt = Integer.parseInt(codigo);
+                    ProductoEntity producto = productoService.findById(codigoInt);
+                    if (producto != null) {
+                        this.carrito.add(producto);
+                    }else{
+                        model.addAttribute("mensajeError", "Producto no encontrado");
+                    }
+                }catch (NumberFormatException e) {
+                    model.addAttribute("mensajeError", "Código inválido");
                 }
                 cargarDatosProductos(model);
                 model.addAttribute("metodosPago", MetodoPago.values());
@@ -145,9 +149,9 @@ public class VendedorController {
                 model.addAttribute("cliente", this.cliente);
                 return "vistas/vendedor/inicio";
             }else {
+                cargarDatosProductos(model);
                 productosFiltrados = productoService.buscarPorCategoriaYProveedor(categoriaId,proveedorId);
                 model.addAttribute("productos", productosFiltrados);
-                cargarDatosProductos(model);
                 model.addAttribute("cliente", this.cliente);
                 return "vistas/vendedor/inicio";
             }
