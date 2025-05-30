@@ -35,7 +35,7 @@ public class VentasController {
             TipoUsuario autoridad = TipoUsuario.valueOf(authority);
             return switch (autoridad) {
                 case ADMINISTRADOR -> "redirect:/admin/ventas/";
-                case FINANZAS -> "redirect:/finanzas/ventas/";
+                case FINANZAS -> "redirect:/finanzas/ventas";
                 case VENDEDOR, CLIENTE -> "redirect:/logout";
                 default -> "redirect:/login?error=unauthorized";
             };
