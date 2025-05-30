@@ -153,12 +153,4 @@ public class ProductosController {
         redirectAttributes.addFlashAttribute("success", "Producto actualizado correctamente");
         return "redirect:/productos";
     }
-
-    // Endpoint para finanzas
-    @RequestMapping(value = "/finanzas/productos", method = RequestMethod.GET)
-    public String listaProductosFinanzas(Model model) {
-        List<ProductoEntity> productos = productoService.findAll();
-        model.addAttribute("productos", productos);
-        return "vistas/finanzas/lista-productos";
-    }
 }

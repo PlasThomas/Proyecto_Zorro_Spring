@@ -1,0 +1,9 @@
+Ernesto Missael Contreras Emigdio
+Jose Manuel Placencia Ramos
+
+Notas en caso de querer cargar las imagenes de los productos de forma correspondiente 
+colocar la carpeta productos /home/nesgerxt/ en este caso remplazando respectivamente su usuario
+
+la ruta final debe de verse asi /home/nesgerxt/productos y esta se cambiara en la clase 
+
+MvcConfig que se encuentra en: package mx.aragon.unam.config

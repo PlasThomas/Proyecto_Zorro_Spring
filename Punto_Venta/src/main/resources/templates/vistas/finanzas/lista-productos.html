@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{plantillas/plantilla_principal}">
+<head>
+    <title>Lista de Productos</title>
+    <style>
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .product-name-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<main class="flex-grow-1 p-4" layout:fragment="content">
+    <div class="card shadow-sm">
+        <div class="card-header bg-custom-red text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i> Lista de Productos</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <td>
+                            <div class="product-name-container">
+                                <img th:src="@{'/product-images/' + ${producto.id} + '.png'}"
+                                     th:onerror="this.src='/images/default-product.png'"
+                                     class="product-image img-thumbnail" alt="Imagen del producto"/>
+                                <span th:text="${producto.nombre}">Nombre</span>
+                            </div>
+                        </td>
+                        <td th:text="${producto.categoria.nombre}">Categoría</td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(producto.precioVenta, 1, 2)}"></td>
+                        <td>
+                            <span th:class="${producto.existencia < 10} ? 'badge bg-danger' : 'badge bg-success'"
+                                  th:text="${producto.existencia}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

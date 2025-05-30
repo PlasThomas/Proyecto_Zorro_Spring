@@ -16,15 +16,16 @@
                 <div class="card border-danger">
                     <div class="card-body">
                         <h5 class="card-title">Ventas Hoy</h5>
-                        <p class="display-6 text-danger">$12,450.00</p>
+                        <p class="display-6 text-danger" th:text="${ventasHoy}"></p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card border-danger">
                     <div class="card-body">
-                        <h5 class="card-title">Pedidos entregados</h5>
-                        <p class="display-6 text-danger">10</p>
+                        <h5 class="card-title">Total de ventas</h5>
+                        <p class="display-6 text-danger" th:if="${totalHoy != null}" th:text="'$' + ${totalHoy}"></p>
+                        <p class="display-6 text-danger" th:if="${totalHoy == null}">$0.00</p>
                     </div>
                 </div>
             </div>
@@ -32,7 +33,7 @@
                 <div class="card border-danger">
                     <div class="card-body">
                         <h5 class="card-title">Pedidos pendientes</h5>
-                        <p class="display-6 text-danger">3</p>
+                        <p class="display-6 text-danger" th:text="${pedidosPendientes}" >3</p>
                     </div>
                 </div>
             </div>
