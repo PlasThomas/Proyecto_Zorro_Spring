@@ -40,7 +40,7 @@
                 <tbody>
                 <tr th:each="mov : ${historialPedidos}">
                     <td th:text="${mov.idMovimiento}"></td>
-                    <td th:text="${mov.pedido.idPedido}"></td>
+                    <td th:text="${mov.pedido != null ? mov.pedido.id : 'N/A'}"></td>
                     <td th:text="${#temporals.format(mov.fechaMovimiento, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${mov.tipoMovimiento}"></td>
                     <td th:text="${mov.estadoAnterior}"></td>
@@ -50,7 +50,7 @@
                     <td th:text="${mov.valorNuevo}"></td>
                     <td th:text="${mov.idReferencia}"></td>
                     <td th:text="${mov.tipoReferencia}"></td>
-                    <td th:text="${mov.usuario.nombreCompleto}"></td>
+                    <td th:text="${mov.usuario != null ? mov.usuario.nombreCompleto : 'N/A'}"></td>
                     <td th:text="${mov.notas}"></td>
                 </tr>
                 </tbody>
