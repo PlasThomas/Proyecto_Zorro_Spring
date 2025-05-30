@@ -73,7 +73,7 @@ public class PDFgenerator {
             String imagePath = basePath + producto.getId() + ".png";
             try {
                 Image img = Image.getInstance(imagePath);
-                img.scaleToFit(50, 50);
+                img.scaleToFit(30, 30);
                 PdfPCell imgCell = new PdfPCell(img);
                 imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 imgCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -91,7 +91,7 @@ public class PDFgenerator {
         }
 
         PdfPCell total = new PdfPCell(new Phrase("Total: $" + venta.getTotal()));
-        total.setColspan(4);
+        total.setColspan(5);
         total.setHorizontalAlignment(Element.ALIGN_RIGHT);
         total.setPadding(8f);
         tabla.addCell(total);
@@ -152,7 +152,7 @@ public class PDFgenerator {
             String imagePath = basePath + producto.getId() + ".png";
             try {
                 Image img = Image.getInstance(imagePath);
-                img.scaleToFit(50, 50);
+                img.scaleToFit(30, 30);
                 PdfPCell imgCell = new PdfPCell(img);
                 imgCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 imgCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -170,7 +170,7 @@ public class PDFgenerator {
         }
 
         PdfPCell total = new PdfPCell(new Phrase("Total: $" + pedido.getTotal()));
-        total.setColspan(4);
+        total.setColspan(5);
         total.setHorizontalAlignment(Element.ALIGN_RIGHT);
         total.setPadding(8f);
         tabla.addCell(total);
